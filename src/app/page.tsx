@@ -7,6 +7,7 @@ export default function Home() {
   const [phone, setPhone] = useState("+998 ");
   const [promoCode, setPromoCode] = useState("");
   const [promoStatus, setPromoStatus] = useState<"idle" | "success" | "error">("idle");
+  const [price, setPrice] = useState(33000);
 
   const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     let val = e.target.value;
@@ -47,8 +48,10 @@ export default function Home() {
     // Case insensitive check
     if (promoCode.trim().toLowerCase() === "media20") {
       setPromoStatus("success");
+      setPrice(26400); // 20% discount
     } else {
       setPromoStatus("error");
+      setPrice(33000); // Reset
     }
   };
 
@@ -142,7 +145,7 @@ export default function Home() {
               <div className={`bg-blue-950/30 rounded-xl p-4 border transition-colors duration-300 ${promoStatus === 'success' ? 'border-green-500/50 bg-green-900/10' : promoStatus === 'error' ? 'border-red-500/50 bg-red-900/10' : 'border-blue-500/20'}`}>
                 {/* Wraps flex content for small screens */}
                 <label className="text-xs font-bold text-gold mb-3 uppercase tracking-wider flex flex-col sm:flex-row sm:justify-between gap-1">
-                  <span>Promokodingiz bormi?</span>
+                  {promoStatus === 'idle' && <span>Promokodingiz bormi?</span>}
                   {promoStatus === 'success' && <span className="text-green-400">Kod qabul qilindi ✓</span>}
                   {promoStatus === 'error' && <span className="text-red-400">Kod noto'g'ri ✕</span>}
                 </label>
@@ -152,7 +155,10 @@ export default function Home() {
                     value={promoCode}
                     onChange={(e) => {
                       setPromoCode(e.target.value);
-                      if (promoStatus !== 'idle') setPromoStatus('idle');
+                      if (promoStatus !== 'idle') {
+                        setPromoStatus('idle');
+                        setPrice(33000); // Reset price
+                      }
                     }}
                     placeholder="KOD"
                     // Added min-w-0 to fix flex overflow issue
@@ -169,17 +175,25 @@ export default function Home() {
               </div>
             </div>
 
-            <div className="flex flex-col gap-4 mt-2">
-              <button className="w-full group relative overflow-hidden rounded-xl shadow-lg shadow-blue-900/20 transform transition-all hover:scale-[1.02] active:scale-[0.98]">
-                <div className="absolute inset-0 bg-gradient-to-r from-blue-600 to-blue-800 group-hover:from-blue-500 group-hover:to-blue-700 transition-colors duration-300"></div>
-                <div className="relative px-6 py-5 flex items-center justify-center gap-3">
-                  <span className="font-bold text-white text-lg tracking-[0.15em] uppercase text-center leading-tight">
-                    To'lash va qo'shilish
-                  </span>
-                  <svg className="w-5 h-5 text-blue-200 group-hover:translate-x-1 transition-transform flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
-                  </svg>
-                </div>
+            {/* Price Display */}
+            <div className="flex justify-between items-center border-t border-white/10 pt-4 px-2">
+              <span className="text-blue-200 text-sm font-bold uppercase tracking-wider">Jami to'lov:</span>
+              <div className="text-right flex flex-col items-end">
+                {promoStatus === 'success' && (
+                  <span className="text-white/40 text-sm line-through decoration-red-500 font-mono">33 000 so'm</span>
+                )}
+                <span className={`font-mono font-black text-2xl ${promoStatus === 'success' ? 'text-green-400' : 'text-white'}`}>
+                  {price.toLocaleString().replace(/,/g, " ")} so'm
+                </span>
+              </div>
+            </div>
+
+            <div className="flex flex-col gap-4">
+              <button className="w-full bg-primary hover:bg-yellow-400 text-black font-black text-lg py-5 rounded-xl shadow-lg shadow-primary/20 transform transition-all hover:scale-[1.02] active:scale-[0.98] uppercase tracking-widest flex items-center justify-center gap-3">
+                <span>TO'LOV QILISH</span>
+                <svg className="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M17 9l4 4m0 0l-4 4m4-4H3" />
+                </svg>
               </button>
             </div>
 
