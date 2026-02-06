@@ -1,26 +1,65 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #0A0A0A;
+  --foreground: #FFFFFF;
+  --primary: #D4AF37;
+  /* Metallic Gold */
+  --secondary: #0F1729;
+  /* Rich Dark Blue */
+  --accent: #FFD700;
+  /* Bright Gold */
+  --muted: #C0C0C0;
+  /* Silver */
+
+  --glass: rgba(255, 255, 255, 0.03);
+  --glass-border: rgba(255, 255, 255, 0.08);
+  --gold-gradient: linear-gradient(135deg, #D4AF37 0%, #FFD700 50%, #B8860B 100%);
+  --blue-gradient: linear-gradient(135deg, #0F1729 0%, #1E2A47 100%);
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+  --color-primary: var(--primary);
+  --color-secondary: var(--secondary);
+  --color-accent: var(--accent);
+  --color-muted: var(--muted);
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --font-serif: var(--font-playfair);
+  --font-sans: var(--font-montserrat);
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-sans), sans-serif;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* Luxury Utilities */
+.text-gold {
+  background: var(--gold-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.bg-gold-gradient {
+  background: var(--gold-gradient);
+}
+
+.glass-panel {
+  background: var(--glass);
+  backdrop-filter: blur(12px);
+  border: 1px solid var(--glass-border);
+}
+
+.glow-text {
+  text-shadow: 0 0 20px rgba(212, 175, 55, 0.3);
+}
+
+.glow-box {
+  box-shadow: 0 0 30px rgba(15, 23, 41, 0.5);
 }
