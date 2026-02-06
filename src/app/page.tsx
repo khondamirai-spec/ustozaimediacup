@@ -98,7 +98,7 @@ export default function Home() {
           <div className="w-full h-12 md:h-24 relative flex items-center justify-center transition-all duration-300 hover:scale-110">
             <div className="relative w-full h-full scale-[1.8] md:scale-[2.2] translate-y-1">
               <Image
-                src="/Font_1.png"
+                src="/Full_2.png"
                 alt="Ustoz AI"
                 fill
                 className="object-contain"
@@ -133,8 +133,17 @@ export default function Home() {
         {/* Left Column: Video (45%) */}
         <div className="w-full md:w-[40%] flex flex-col gap-6">
           <div className="relative w-full aspect-[9/16] md:aspect-auto md:flex-1 md:h-full rounded-3xl overflow-hidden glass-panel border-white/20 shadow-2xl group cursor-pointer transition-transform duration-500 hover:scale-[1.02]">
-            {/* Video Placeholder */}
-            <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-black/80 flex items-center justify-center">
+            {/* Main Featured Image / Video Placeholder */}
+            <Image
+              src="/Full_2.png"
+              alt="Ustoz AI Media Cup"
+              fill
+              className="object-cover"
+              priority
+            />
+
+            {/* Play Button Overlay */}
+            <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-transparent to-black/60 flex items-center justify-center">
               <div className="w-20 h-20 rounded-full border-2 border-white/50 flex items-center justify-center bg-white/10 backdrop-blur-md group-hover:bg-white/20 group-hover:scale-110 transition-all duration-500">
                 <div className="w-0 h-0 border-t-[10px] border-t-transparent border-l-[18px] border-l-white border-b-[10px] border-b-transparent ml-1"></div>
               </div>
@@ -147,7 +156,7 @@ export default function Home() {
           {/* Promocode Badge */}
           <div className="flex flex-col items-center justify-center p-6 md:p-8 glass-panel rounded-3xl bg-white/5 relative overflow-hidden group border-white/10">
             <div className="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-transparent via-gold to-transparent opacity-50" />
-            <span className="text-gold uppercase tracking-[0.4em] text-[11px] md:text-xs font-bold mb-2 md:mb-3 opacity-80">Rasmiy Promokod</span>
+            <span className="font-display text-gold uppercase tracking-[0.4em] text-[11px] md:text-xs font-bold mb-2 md:mb-3 opacity-80">Rasmiy Promokod</span>
             <div className="font-display text-2xl md:text-4xl font-black text-white tracking-[0.2em] relative z-10 group-hover:scale-105 transition-transform duration-500">
               MEDIACUP20
             </div>

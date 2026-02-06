@@ -1,15 +1,15 @@
 import type { Metadata } from "next";
-import { Inter, Montserrat } from "next/font/google";
+import { Outfit, Sora } from "next/font/google";
 import "./globals.css";
 
-const inter = Inter({
-  variable: "--font-inter",
+const outfit = Outfit({
+  variable: "--font-outfit",
   subsets: ["latin"],
   display: "swap",
 });
 
-const montserrat = Montserrat({
-  variable: "--font-montserrat",
+const sora = Sora({
+  variable: "--font-sora",
   subsets: ["latin"],
   display: "swap",
 });
@@ -27,7 +27,7 @@ export default function RootLayout({
   return (
     <html lang="uz">
       <body
-        className={`${inter.variable} ${montserrat.variable} antialiased`}
+        className={`${outfit.variable} ${sora.variable} antialiased`}
       >
         {children}
       </body>
