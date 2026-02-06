@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
-import { Playfair_Display, Montserrat } from "next/font/google";
+import { Inter, Montserrat } from "next/font/google";
 import "./globals.css";
 
-const playfair = Playfair_Display({
-  variable: "--font-playfair",
+const inter = Inter({
+  variable: "--font-inter",
   subsets: ["latin"],
   display: "swap",
 });
@@ -15,8 +15,8 @@ const montserrat = Montserrat({
 });
 
 export const metadata: Metadata = {
-  title: "Ustoz AI Media Cup",
-  description: "Premium Media & AI Competition",
+  title: "Ustoz AI Media Cup | Media Kelajagi",
+  description: "Yoshlar Ishlari Agentligi va Turon Bank taqdim etadi: Ustoz AI Media Cup. Ro'yxatdan o'ting va media sohasida o'z o'rningizni toping.",
 };
 
 export default function RootLayout({
@@ -25,9 +25,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="uz">
       <body
-        className={`${playfair.variable} ${montserrat.variable} antialiased`}
+        className={`${inter.variable} ${montserrat.variable} antialiased`}
       >
         {children}
       </body>

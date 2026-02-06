@@ -1,65 +1,82 @@
 @import "tailwindcss";
 
 :root {
-  --background: #0A0A0A;
+  --background: #0A2540;
   --foreground: #FFFFFF;
-  --primary: #D4AF37;
-  /* Metallic Gold */
-  --secondary: #0F1729;
-  /* Rich Dark Blue */
-  --accent: #FFD700;
-  /* Bright Gold */
-  --muted: #C0C0C0;
-  /* Silver */
 
-  --glass: rgba(255, 255, 255, 0.03);
-  --glass-border: rgba(255, 255, 255, 0.08);
-  --gold-gradient: linear-gradient(135deg, #D4AF37 0%, #FFD700 50%, #B8860B 100%);
-  --blue-gradient: linear-gradient(135deg, #0F1729 0%, #1E2A47 100%);
+  /* Palette from Prompt */
+  --primary-navy: #0A2540;
+  --secondary-navy: #1E3A5F;
+  --electric-blue: #0066FF;
+  --accent-gold: #FFB800;
+
+  --glass: rgba(255, 255, 255, 0.05);
+  --glass-border: rgba(255, 255, 255, 0.1);
+  --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+
+  --gradient-bg: linear-gradient(135deg, #0A2540 0%, #05101a 100%);
+  --gradient-gold: linear-gradient(135deg, #FFB800 0%, #FF9500 100%);
+  --gradient-blue: linear-gradient(135deg, #0066FF 0%, #2E90FA 100%);
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --color-primary: var(--primary);
-  --color-secondary: var(--secondary);
-  --color-accent: var(--accent);
-  --color-muted: var(--muted);
+  --color-primary: var(--primary-navy);
+  --color-secondary: var(--secondary-navy);
+  --color-electric: var(--electric-blue);
+  --color-gold: var(--accent-gold);
 
-  --font-serif: var(--font-playfair);
-  --font-sans: var(--font-montserrat);
+  --font-display: var(--font-montserrat), sans-serif;
+  --font-body: var(--font-inter), sans-serif;
 }
 
 body {
-  background: var(--background);
+  background: var(--gradient-bg);
   color: var(--foreground);
-  font-family: var(--font-sans), sans-serif;
+  font-family: var(--font-body);
   min-height: 100vh;
   overflow-x: hidden;
 }
 
-/* Luxury Utilities */
-.text-gold {
-  background: var(--gold-gradient);
+/* Utilities */
+.glass-panel {
+  background: var(--glass);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--glass-shadow);
+}
+
+.text-gradient-gold {
+  background: var(--gradient-gold);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
 
-.bg-gold-gradient {
-  background: var(--gold-gradient);
-}
-
-.glass-panel {
-  background: var(--glass);
-  backdrop-filter: blur(12px);
-  border: 1px solid var(--glass-border);
-}
-
 .glow-text {
-  text-shadow: 0 0 20px rgba(212, 175, 55, 0.3);
+  text-shadow: 0 0 20px rgba(0, 102, 255, 0.5);
 }
 
 .glow-box {
-  box-shadow: 0 0 30px rgba(15, 23, 41, 0.5);
+  box-shadow: 0 0 30px rgba(0, 102, 255, 0.3);
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #0A2540;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #1E3A5F;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #0066FF;
 }

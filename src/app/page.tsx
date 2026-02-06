@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 export default function Home() {
   const [phone, setPhone] = useState("+998 ");
@@ -9,207 +9,265 @@ export default function Home() {
   const [promoStatus, setPromoStatus] = useState<"idle" | "success" | "error">("idle");
   const [price, setPrice] = useState(33000);
 
+  // Animation state
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
   const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     let val = e.target.value;
-
-    // Prefixni saqlab qolish
     if (!val.startsWith("+998 ")) {
-      if (val.startsWith("+998")) {
-        val = "+998 " + val.slice(4);
-      } else {
-        val = "+998 ";
-      }
+      val = val.startsWith("+998") ? "+998 " + val.slice(4) : "+998 ";
     }
-
     const rawDigits = val.slice(5).replace(/\D/g, "");
-
-    // Format: 99-123-45-67
     let formatted = "";
-    if (rawDigits.length > 0) {
-      formatted += rawDigits.substring(0, 2);
-    }
-    if (rawDigits.length >= 3) {
-      formatted += "-" + rawDigits.substring(2, 5);
-    }
-    if (rawDigits.length >= 6) {
-      formatted += "-" + rawDigits.substring(5, 7);
-    }
-    if (rawDigits.length >= 8) {
-      formatted += "-" + rawDigits.substring(7, 9);
-    }
+    if (rawDigits.length > 0) formatted += rawDigits.substring(0, 2);
+    if (rawDigits.length >= 3) formatted += "-" + rawDigits.substring(2, 5);
+    if (rawDigits.length >= 6) formatted += "-" + rawDigits.substring(5, 7);
+    if (rawDigits.length >= 8) formatted += "-" + rawDigits.substring(7, 9);
 
-    // Limit to 9 digits (+998 XX-XXX-XX-XX)
-    const finalFormatted = formatted.length > 12 ? formatted.substring(0, 12) : formatted;
-
-    setPhone("+998 " + finalFormatted);
+    // Max length check
+    if (rawDigits.length <= 9) {
+      setPhone("+998 " + formatted);
+    }
   };
 
   const handleApplyPromo = () => {
-    // Case insensitive check
-    if (promoCode.trim().toLowerCase() === "media20") {
+    if (promoCode.trim().toLowerCase() === "mediacup20") {
       setPromoStatus("success");
-      setPrice(26400); // 20% discount
+      setPrice(26400);
     } else {
       setPromoStatus("error");
-      setPrice(33000); // Reset
+      setPrice(33000);
     }
   };
 
   return (
-    <div className="min-h-screen bg-transparent relative overflow-hidden flex flex-col items-center font-sans selection:bg-primary selection:text-black">
+    <div className={`min-h-screen relative flex flex-col font-body transition-opacity duration-700 ${mounted ? 'opacity-100' : 'opacity-0'}`}>
+
       {/* Background Ambience */}
-      <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none z-0">
-        <div className="absolute top-[-20%] left-[-10%] w-[70%] h-[70%] bg-blue-900/20 rounded-full blur-[120px] mix-blend-screen" />
-        <div className="absolute bottom-[-10%] right-[-10%] w-[60%] h-[60%] bg-blue-600/10 rounded-full blur-[100px] mix-blend-screen" />
+      <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
+        <div className="absolute top-[-10%] left-[-10%] w-[60%] h-[60%] bg-[#1E3A5F] rounded-full blur-[150px] opacity-40 animate-pulse" />
+        <div className="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] bg-[#0066FF] rounded-full blur-[120px] opacity-20" />
+
+        {/* Geometric Shapes */}
+        <div className="absolute top-20 right-20 w-32 h-32 border border-white/5 rounded-full" />
+        <div className="absolute bottom-40 left-10 w-24 h-24 border border-white/5 rotate-45" />
       </div>
 
       {/* Header */}
-      <header className="w-full max-w-7xl mx-auto px-6 py-8 z-10 flex flex-col items-center text-center">
-        <div className="mb-6">
-          <span className="font-serif text-3xl font-black text-white tracking-widest border-b-2 border-primary pb-1">
-            USTOZ AI
-          </span>
+      <header className="w-full max-w-[1400px] mx-auto px-2 md:px-6 py-4 md:py-8 z-20">
+        <div className="grid grid-cols-4 items-center justify-items-center gap-x-2 md:gap-x-6 glass-panel py-4 md:py-6 px-2 md:px-10 rounded-2xl border-white/5 bg-white/5 backdrop-blur-md">
+          {/* Yoshlar Ishlari */}
+          <div className="w-full h-6 md:h-12 relative flex items-center justify-center transition-opacity hover:opacity-80">
+            <Image
+              src="/yia logo _white-01.png"
+              alt="Yoshlar Ishlari Agentligi"
+              fill
+              className="object-contain"
+              priority
+            />
+          </div>
+
+          {/* AICA */}
+          <div className="w-full h-6 md:h-14 relative flex items-center justify-center transition-all duration-300 hover:scale-110">
+            <div className="relative w-full h-full scale-125 md:scale-150">
+              <Image
+                src="/1.png"
+                alt="AICA"
+                fill
+                className="object-contain"
+                priority
+              />
+            </div>
+          </div>
+
+          {/* Yoshlar Ventures */}
+          <div className="w-full h-6 md:h-12 relative flex items-center justify-center transition-opacity hover:opacity-80">
+            <Image
+              src="/Asset 2@2x-8.png"
+              alt="Yoshlar Ventures"
+              fill
+              className="object-contain"
+              priority
+            />
+          </div>
+
+          {/* Ustoz AI - THE ONLY ONE MADE BIGGER */}
+          <div className="w-full h-12 md:h-24 relative flex items-center justify-center transition-all duration-300 hover:scale-110">
+            <div className="relative w-full h-full scale-[1.8] md:scale-[2.2] translate-y-1">
+              <Image
+                src="/Font_1.png"
+                alt="Ustoz AI"
+                fill
+                className="object-contain"
+                priority
+              />
+            </div>
+          </div>
         </div>
-        <h1 className="font-serif text-5xl md:text-7xl font-black tracking-tight text-white mb-3 glow-text drop-shadow-2xl">
-          MEDIA <span className="text-gold">CUP</span>
-        </h1>
-        <p className="font-bold text-blue-200/80 text-sm md:text-lg tracking-[0.3em] uppercase">
-          Media Mukammalligi Kelajagi
-        </p>
       </header>
 
+      {/* Main Page Title */}
+      <section className="w-full max-w-[1400px] mx-auto px-6 pt-12 pb-4 text-center z-10">
+        <h1 className="font-display font-black text-5xl md:text-8xl tracking-tight text-white mb-4 glow-text uppercase">
+          USTOZ AI <span className="text-gradient-gold">MEDIA CUP</span>
+        </h1>
+      </section>
+
       {/* Main Content */}
-      <main className="flex-1 w-full max-w-7xl mx-auto px-4 md:px-8 py-8 z-10 flex flex-col md:flex-row gap-12 md:gap-20 items-start justify-center">
+      <main className="flex-1 w-full max-w-[1400px] mx-auto px-4 md:px-8 py-4 z-10 flex flex-col md:flex-row gap-8 lg:gap-16 items-stretch justify-center mt-4">
 
-        {/* Left Column: 9:16 Video Section */}
-        <div className="w-full md:w-[40%] flex flex-col items-center">
-          <div className="relative w-full max-w-xs mx-auto aspect-[9/16] rounded-2xl glow-box group cursor-pointer overflow-hidden border-2 border-primary/30 bg-black/60 shadow-2xl shadow-blue-900/50">
-            {/* Decorative Corners */}
-            <div className="absolute top-4 left-4 w-6 h-6 border-t-2 border-l-2 border-primary"></div>
-            <div className="absolute top-4 right-4 w-6 h-6 border-t-2 border-r-2 border-primary"></div>
-            <div className="absolute bottom-4 left-4 w-6 h-6 border-b-2 border-l-2 border-primary"></div>
-            <div className="absolute bottom-4 right-4 w-6 h-6 border-b-2 border-r-2 border-primary"></div>
-
-            {/* Video Placeholder Content */}
-            <div className="absolute inset-0 flex items-center justify-center">
-              <div className="w-20 h-20 rounded-full border-2 border-primary/80 flex items-center justify-center bg-white/10 backdrop-blur-md group-hover:scale-110 transition-transform duration-500 shadow-lg shadow-primary/20">
-                <div className="w-0 h-0 border-t-[12px] border-t-transparent border-l-[22px] border-l-primary border-b-[12px] border-b-transparent ml-1"></div>
+        {/* Left Column: Video (45%) */}
+        <div className="w-full md:w-[40%] flex flex-col gap-6">
+          <div className="relative w-full aspect-[9/16] md:aspect-auto md:flex-1 md:h-full rounded-3xl overflow-hidden glass-panel border-white/20 shadow-2xl group cursor-pointer transition-transform duration-500 hover:scale-[1.02]">
+            {/* Video Placeholder */}
+            <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-black/80 flex items-center justify-center">
+              <div className="w-20 h-20 rounded-full border-2 border-white/50 flex items-center justify-center bg-white/10 backdrop-blur-md group-hover:bg-white/20 group-hover:scale-110 transition-all duration-500">
+                <div className="w-0 h-0 border-t-[10px] border-t-transparent border-l-[18px] border-l-white border-b-[10px] border-b-transparent ml-1"></div>
               </div>
             </div>
 
-            {/* Live/Status Label */}
-            <div className="absolute top-6 left-1/2 -translate-x-1/2">
-              <span className="font-bold text-[10px] tracking-[0.2em] text-white uppercase px-3 py-1 bg-red-600 rounded-full shadow-lg animate-pulse">
-                Jonli Efir
-              </span>
-            </div>
+            {/* Overlay Gradient */}
+            <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-transparent to-transparent pointer-events-none" />
           </div>
 
-          <div className="mt-8 flex flex-col items-center gap-2">
-            <span className="text-blue-200/60 uppercase tracking-widest text-xs font-bold">Rasmiy Promokod</span>
-            <div className="px-8 py-3 bg-white/5 border border-primary/30 rounded-xl backdrop-blur-sm relative overflow-hidden group">
-              <div className="absolute inset-0 bg-primary/10 group-hover:bg-primary/20 transition-colors"></div>
-              <span className="font-mono text-3xl font-black text-gold tracking-widest relative z-10">media20</span>
+          {/* Promocode Badge */}
+          <div className="flex flex-col items-center justify-center p-6 md:p-8 glass-panel rounded-3xl bg-white/5 relative overflow-hidden group border-white/10">
+            <div className="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-transparent via-gold to-transparent opacity-50" />
+            <span className="text-gold uppercase tracking-[0.4em] text-[9px] md:text-[10px] font-bold mb-2 md:mb-3 opacity-80">Rasmiy Promokod</span>
+            <div className="font-display text-2xl md:text-4xl font-black text-white tracking-[0.2em] relative z-10 group-hover:scale-105 transition-transform duration-500">
+              MEDIACUP20
             </div>
-            <p className="text-white/40 text-xs max-w-[200px] text-center mt-2">Maxsus imtiyoz uchun ushbu koddan foydalaning.</p>
+            <div className="absolute -right-4 -bottom-4 w-32 h-32 bg-gold/5 rounded-full blur-2xl group-hover:bg-gold/10 transition-colors" />
           </div>
         </div>
 
-        {/* Right Column: CTA & Form */}
-        <div className="w-full md:w-[60%] flex flex-col gap-6 max-w-lg pt-4">
-          {/* Adjusted padding for specific mobile optimization */}
-          <div className="glass-panel p-6 md:p-10 rounded-3xl flex flex-col gap-8 relative border border-white/10 bg-gradient-to-br from-blue-900/40 to-black/60 shadow-2xl">
+        {/* Right Column: Form (55%) */}
+        <div className="w-full md:w-[60%] flex flex-col gap-6">
+          <div className="glass-panel p-6 md:p-12 rounded-[2.5rem] border-white/10 bg-white/5 shadow-2xl relative overflow-hidden">
 
-            <div className="flex flex-col gap-6">
-              <div>
-                <label className="block text-xs font-bold text-blue-300 mb-2 uppercase tracking-wider ml-1">To'liq ismingiz</label>
+            {/* Abstract background for form */}
+            <div className="absolute -top-24 -right-24 w-64 h-64 bg-gold/5 rounded-full blur-[80px]" />
+            <div className="absolute -bottom-24 -left-24 w-64 h-64 bg-electric/5 rounded-full blur-[80px]" />
+
+            {/* Form Header */}
+            <div className="mb-6 md:mb-10 text-center md:text-left relative z-10">
+              <h2 className="text-3xl md:text-6xl font-black text-white mb-2 md:mb-3 font-display tracking-tight uppercase leading-tight">
+                RO'YXATDAN <span className="text-gradient-gold">O'TISH</span>
+              </h2>
+            </div>
+
+            <div className="flex flex-col gap-6 relative z-10">
+              {/* Name Input */}
+              <div className="space-y-2">
+                <label className="block text-[10px] font-bold text-white/50 mb-1 uppercase tracking-[0.2em] ml-1">To'liq ismingiz</label>
                 <input
                   type="text"
-                  placeholder="Ism va familiyangizni kiriting"
-                  className="w-full bg-black/40 border border-white/10 rounded-xl px-5 py-4 text-white font-bold outline-none focus:border-primary transition-all placeholder:text-white/20 focus:ring-2 focus:ring-primary/20 focus:bg-black/60"
+                  placeholder="Ism Familiya"
+                  className="w-full bg-white/[0.03] border border-white/10 rounded-2xl px-6 py-5 text-white hover:border-white/20 focus:border-gold/50 transition-all outline-none text-lg placeholder:text-white/10 shadow-xl"
                 />
               </div>
 
-              <div>
-                <label className="block text-xs font-bold text-blue-300 mb-2 uppercase tracking-wider ml-1">Telefon raqami</label>
+              {/* Phone Input */}
+              <div className="space-y-2">
+                <label className="block text-[10px] font-bold text-white/50 mb-1 uppercase tracking-[0.2em] ml-1">Telefon raqam</label>
                 <input
                   type="text"
                   value={phone}
                   onChange={handlePhoneChange}
-                  maxLength={17}
-                  className="w-full bg-black/40 border border-white/10 rounded-xl px-5 py-4 text-white font-bold outline-none focus:border-primary transition-all placeholder:text-white/20 focus:ring-2 focus:ring-primary/20 focus:bg-black/60 font-mono tracking-wider text-xl"
+                  className="w-full bg-white/[0.03] border border-white/10 rounded-2xl px-6 py-5 text-white hover:border-white/20 focus:border-gold/50 transition-all outline-none font-mono text-xl tracking-wider placeholder:text-white/10 shadow-xl"
                 />
               </div>
 
-              {/* Redesigned Promocode Section with Validation */}
-              <div className={`bg-blue-950/30 rounded-xl p-4 border transition-colors duration-300 ${promoStatus === 'success' ? 'border-green-500/50 bg-green-900/10' : promoStatus === 'error' ? 'border-red-500/50 bg-red-900/10' : 'border-blue-500/20'}`}>
-                {/* Wraps flex content for small screens */}
-                <label className="text-xs font-bold text-gold mb-3 uppercase tracking-wider flex flex-col sm:flex-row sm:justify-between gap-1">
-                  {promoStatus === 'idle' && <span>Promokodingiz bormi?</span>}
-                  {promoStatus === 'success' && <span className="text-green-400">Kod qabul qilindi ✓</span>}
-                  {promoStatus === 'error' && <span className="text-red-400">Kod noto'g'ri ✕</span>}
-                </label>
-                <div className="flex gap-2">
+              <div className="mt-6 flex flex-col gap-6">
+                {/* Promo Code Input Field */}
+                <div className="relative group">
                   <input
                     type="text"
+                    className={`w-full bg-transparent border-b-2 py-4 text-center font-display text-2xl uppercase tracking-[0.3em] outline-none transition-colors placeholder:text-white/5 placeholder:text-sm ${promoStatus === 'success'
+                      ? 'border-green-500 text-green-500'
+                      : promoStatus === 'error'
+                        ? 'border-red-500 text-red-500'
+                        : 'border-white/10 text-gold focus:border-gold'
+                      }`}
+                    placeholder="PROMOKOD KIRITING"
                     value={promoCode}
                     onChange={(e) => {
                       setPromoCode(e.target.value);
-                      if (promoStatus !== 'idle') {
-                        setPromoStatus('idle');
-                        setPrice(33000); // Reset price
-                      }
+                      setPromoStatus('idle');
+                      setPrice(33000);
                     }}
-                    placeholder="KOD"
-                    // Added min-w-0 to fix flex overflow issue
-                    className="flex-1 min-w-0 bg-black/40 border border-dashed border-white/20 rounded-lg px-4 py-3 text-white text-center font-mono uppercase tracking-widest outline-none focus:border-primary transition-colors focus:bg-black/60"
                   />
+                  {/* Status Indicator / Underline animation */}
+                  <div className={`absolute bottom-0 left-1/2 -translate-x-1/2 h-[2px] transition-all duration-500 group-focus-within:w-full ${promoStatus === 'success' ? 'w-full bg-green-500' :
+                    promoStatus === 'error' ? 'w-full bg-red-500' :
+                      'w-0 bg-gold'
+                    }`} />
+
+                  {/* Success Checkmark */}
+                  {promoStatus === 'success' && (
+                    <div className="absolute right-0 top-1/2 -translate-y-1/2 text-green-500 text-xl animate-in fade-in zoom-in duration-300">
+                      ✓
+                    </div>
+                  )}
+                </div>
+
+                {/* Quick Apply Promo Link */}
+                <div className="text-center -mt-2 mb-2">
                   <button
-                    onClick={handleApplyPromo}
-                    // Adjusted padding and kept text on one line
-                    className="bg-white/10 hover:bg-white/20 text-white font-bold px-4 py-3 rounded-lg text-sm border border-white/10 transition-all uppercase tracking-wide whitespace-nowrap"
+                    onClick={() => {
+                      setPromoCode("mediacup20");
+                      setPromoStatus("success");
+                      setPrice(26400);
+                    }}
+                    className="text-white/40 text-[10px] uppercase tracking-widest hover:text-gold transition-colors underline decoration-dotted underline-offset-4"
                   >
-                    Qo'llash
+                    Promokoddan foydalanish
                   </button>
                 </div>
+
+                {/* Primary Button */}
+                <button
+                  onClick={handleApplyPromo}
+                  className="w-full bg-white/5 hover:bg-white/10 border border-white/10 transition-all duration-300 py-3 rounded-2xl text-white font-bold text-xs uppercase tracking-[0.3em] backdrop-blur-sm"
+                >
+                  TASDIQLANG
+                </button>
+
+                {/* Price Summary */}
+                <div className="flex justify-between items-end px-4 py-6 rounded-2xl bg-white/[0.02] border border-white/5">
+                  <div className="flex flex-col">
+                    <span className="text-white/30 text-[10px] font-bold uppercase tracking-widest mb-1">To'lov miqdori</span>
+                    <span className="text-white/60 font-medium">Jami:</span>
+                  </div>
+                  <div className="text-right">
+                    {promoStatus === 'success' && (
+                      <span className="text-sm text-white/30 line-through block mb-1">33 000 so'm</span>
+                    )}
+                    <span className="text-4xl font-black text-white font-display uppercase">
+                      {price.toLocaleString().replace(/,/g, " ")} <span className="text-lg text-gold ml-1">so'm</span>
+                    </span>
+                  </div>
+                </div>
+
+                {/* Secondary Button - Solid Gold */}
+                <button className="w-full bg-gradient-to-r from-[#FFB800] to-[#FF9500] hover:scale-[1.02] active:scale-[0.98] transition-all duration-300 py-6 rounded-2xl text-primary font-black text-xl uppercase tracking-[0.1em] shadow-[0_20px_40px_rgba(255,184,0,0.2)]">
+                  TO'LOV QILISH
+                </button>
               </div>
-            </div>
-
-            {/* Price Display */}
-            <div className="flex justify-between items-center border-t border-white/10 pt-4 px-2">
-              <span className="text-blue-200 text-sm font-bold uppercase tracking-wider">Jami to'lov:</span>
-              <div className="text-right flex flex-col items-end">
-                {promoStatus === 'success' && (
-                  <span className="text-white/40 text-sm line-through decoration-red-500 font-mono">33 000 so'm</span>
-                )}
-                <span className={`font-mono font-black text-2xl ${promoStatus === 'success' ? 'text-green-400' : 'text-white'}`}>
-                  {price.toLocaleString().replace(/,/g, " ")} so'm
-                </span>
-              </div>
-            </div>
-
-            <div className="flex flex-col gap-4">
-              <button className="w-full bg-primary hover:bg-yellow-400 text-black font-black text-lg py-5 rounded-xl shadow-lg shadow-primary/20 transform transition-all hover:scale-[1.02] active:scale-[0.98] uppercase tracking-widest flex items-center justify-center gap-3">
-                <span>TO'LOV QILISH</span>
-                <svg className="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M17 9l4 4m0 0l-4 4m4-4H3" />
-                </svg>
-              </button>
-            </div>
-
-            <div className="text-center">
-              <p className="text-blue-300/40 text-[10px] uppercase font-bold tracking-widest">
-                Ustoz AI orqali xavfsiz to'lov
-              </p>
             </div>
           </div>
         </div>
       </main>
 
+
       {/* Footer */}
-      <footer className="w-full py-8 text-center z-10 border-t border-white/5 bg-black/20 backdrop-blur-lg mt-auto">
-        <p className="text-white/30 text-xs font-bold tracking-widest">© 2026 USTOZ AI MEDIA CUP. Barcha huquqlar himoyalangan.</p>
+      <footer className="w-full py-8 text-center border-t border-white/5">
+        <p className="text-white/30 text-xs font-bold tracking-[0.2em] font-display">© 2026 USTOZ AI MEDIA CUP</p>
       </footer>
     </div>
   );
 }
+
