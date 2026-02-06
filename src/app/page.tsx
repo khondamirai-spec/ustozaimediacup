@@ -110,14 +110,25 @@ export default function Home() {
       </header>
 
       {/* Main Page Title */}
-      <section className="w-full max-w-[1400px] mx-auto px-6 pt-12 pb-4 text-center z-10">
+      <section className="w-full max-w-[1400px] mx-auto px-6 pt-12 pb-0 text-center z-10">
         <h1 className="font-display font-black text-5xl md:text-8xl tracking-tight text-white mb-4 glow-text uppercase">
           USTOZ AI <span className="text-gradient-gold">MEDIA CUP</span>
         </h1>
+
+        {/* Mobile Scroll Indicator */}
+        <button
+          onClick={() => document.getElementById('register-section')?.scrollIntoView({ behavior: 'smooth' })}
+          className="md:hidden mx-auto mt-6 flex flex-col items-center gap-2 cursor-pointer z-50 pb-2"
+        >
+          <span className="text-lg font-black tracking-[0.2em] uppercase text-white drop-shadow-[0_0_10px_rgba(255,255,255,0.8)]">RO'YXATDAN O'TISH</span>
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={3} stroke="currentColor" className="w-6 h-6 text-gold drop-shadow-[0_0_15px_rgba(255,184,0,0.8)]">
+            <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
+          </svg>
+        </button>
       </section>
 
       {/* Main Content */}
-      <main className="flex-1 w-full max-w-[1400px] mx-auto px-4 md:px-8 py-4 z-10 flex flex-col md:flex-row gap-8 lg:gap-16 items-stretch justify-center mt-4">
+      <main className="flex-1 w-full max-w-[1400px] mx-auto px-4 md:px-8 py-4 z-10 flex flex-col md:flex-row gap-8 lg:gap-16 items-stretch justify-center -mt-2">
 
         {/* Left Column: Video (45%) */}
         <div className="w-full md:w-[40%] flex flex-col gap-6">
@@ -136,7 +147,7 @@ export default function Home() {
           {/* Promocode Badge */}
           <div className="flex flex-col items-center justify-center p-6 md:p-8 glass-panel rounded-3xl bg-white/5 relative overflow-hidden group border-white/10">
             <div className="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-transparent via-gold to-transparent opacity-50" />
-            <span className="text-gold uppercase tracking-[0.4em] text-[9px] md:text-[10px] font-bold mb-2 md:mb-3 opacity-80">Rasmiy Promokod</span>
+            <span className="text-gold uppercase tracking-[0.4em] text-[11px] md:text-xs font-bold mb-2 md:mb-3 opacity-80">Rasmiy Promokod</span>
             <div className="font-display text-2xl md:text-4xl font-black text-white tracking-[0.2em] relative z-10 group-hover:scale-105 transition-transform duration-500">
               MEDIACUP20
             </div>
@@ -146,7 +157,7 @@ export default function Home() {
 
         {/* Right Column: Form (55%) */}
         <div className="w-full md:w-[60%] flex flex-col gap-6">
-          <div className="glass-panel p-6 md:p-12 rounded-[2.5rem] border-white/10 bg-white/5 shadow-2xl relative overflow-hidden">
+          <div id="register-section" className="glass-panel p-6 md:p-12 rounded-[2.5rem] border-white/10 bg-white/5 shadow-2xl relative overflow-hidden">
 
             {/* Abstract background for form */}
             <div className="absolute -top-24 -right-24 w-64 h-64 bg-gold/5 rounded-full blur-[80px]" />
@@ -222,19 +233,21 @@ export default function Home() {
                       setPromoStatus("success");
                       setPrice(26400);
                     }}
-                    className="text-white/40 text-[10px] uppercase tracking-widest hover:text-gold transition-colors underline decoration-dotted underline-offset-4"
+                    className="text-white/40 text-xs uppercase tracking-widest hover:text-gold transition-colors underline decoration-dotted underline-offset-4"
                   >
                     Promokoddan foydalanish
                   </button>
                 </div>
 
-                {/* Primary Button */}
-                <button
-                  onClick={handleApplyPromo}
-                  className="w-full bg-white/5 hover:bg-white/10 border border-white/10 transition-all duration-300 py-3 rounded-2xl text-white font-bold text-xs uppercase tracking-[0.3em] backdrop-blur-sm"
-                >
-                  TASDIQLANG
-                </button>
+                {/* Primary Button - Only visible when typing and not verified */}
+                {promoCode.length > 0 && promoStatus !== 'success' && (
+                  <button
+                    onClick={handleApplyPromo}
+                    className="w-full bg-white/5 hover:bg-white/10 border border-white/10 transition-all duration-300 py-3 rounded-2xl text-white font-bold text-xs uppercase tracking-[0.3em] backdrop-blur-sm animate-in fade-in slide-in-from-top-2"
+                  >
+                    TASDIQLANG
+                  </button>
+                )}
 
                 {/* Price Summary */}
                 <div className="flex justify-between items-end px-4 py-6 rounded-2xl bg-white/[0.02] border border-white/5">
