@@ -3,11 +3,16 @@
 import Image from "next/image";
 import { useState, useEffect } from "react";
 
+const PRICES = {
+  monthly: 39000,
+  yearly: 277000
+};
+
 export default function Home() {
   const [phone, setPhone] = useState("+998 ");
   const [promoCode, setPromoCode] = useState("");
   const [promoStatus, setPromoStatus] = useState<"idle" | "success" | "error">("idle");
-  const [price, setPrice] = useState(33000);
+  const [subscription, setSubscription] = useState<"monthly" | "yearly">("monthly");
 
   // Animation state
   const [mounted, setMounted] = useState(false);
@@ -36,12 +41,14 @@ export default function Home() {
   const handleApplyPromo = () => {
     if (promoCode.trim().toLowerCase() === "mediacup20") {
       setPromoStatus("success");
-      setPrice(26400);
     } else {
       setPromoStatus("error");
-      setPrice(33000);
     }
   };
+
+  const currentPrice = PRICES[subscription];
+  const discount = promoStatus === "success" ? 0.2 : 0;
+  const finalPrice = currentPrice * (1 - discount);
 
   return (
     <div className={`min-h-screen relative flex flex-col font-body transition-opacity duration-700 ${mounted ? 'opacity-100' : 'opacity-0'}`}>
@@ -56,58 +63,7 @@ export default function Home() {
         <div className="absolute bottom-40 left-10 w-24 h-24 border border-white/5 rotate-45" />
       </div>
 
-      {/* Header */}
-      <header className="w-full max-w-[1400px] mx-auto px-2 md:px-6 py-4 md:py-8 z-20">
-        <div className="grid grid-cols-4 items-center justify-items-center gap-x-2 md:gap-x-6 glass-panel py-4 md:py-6 px-2 md:px-10 rounded-2xl border-white/5 bg-white/5 backdrop-blur-md">
-          {/* Yoshlar Ishlari */}
-          <div className="w-full h-6 md:h-12 relative flex items-center justify-center transition-opacity hover:opacity-80">
-            <Image
-              src="/yia logo _white-01.png"
-              alt="Yoshlar Ishlari Agentligi"
-              fill
-              className="object-contain"
-              priority
-            />
-          </div>
-
-          {/* AICA */}
-          <div className="w-full h-6 md:h-14 relative flex items-center justify-center transition-all duration-300 hover:scale-110">
-            <div className="relative w-full h-full scale-125 md:scale-150">
-              <Image
-                src="/1.png"
-                alt="AICA"
-                fill
-                className="object-contain"
-                priority
-              />
-            </div>
-          </div>
-
-          {/* Yoshlar Ventures */}
-          <div className="w-full h-6 md:h-12 relative flex items-center justify-center transition-opacity hover:opacity-80">
-            <Image
-              src="/Asset 2@2x-8.png"
-              alt="Yoshlar Ventures"
-              fill
-              className="object-contain"
-              priority
-            />
-          </div>
-
-          {/* Ustoz AI - THE ONLY ONE MADE BIGGER */}
-          <div className="w-full h-12 md:h-24 relative flex items-center justify-center transition-all duration-300 hover:scale-110">
-            <div className="relative w-full h-full scale-[1.8] md:scale-[2.2] translate-y-1">
-              <Image
-                src="/Full_2.png"
-                alt="Ustoz AI"
-                fill
-                className="object-contain"
-                priority
-              />
-            </div>
-          </div>
-        </div>
-      </header>
+      {/* Header removed */}
 
       {/* Main Page Title */}
       <section className="w-full max-w-[1400px] mx-auto px-6 pt-12 pb-0 text-center z-10">
@@ -217,7 +173,6 @@ export default function Home() {
                     onChange={(e) => {
                       setPromoCode(e.target.value);
                       setPromoStatus('idle');
-                      setPrice(33000);
                     }}
                   />
                   {/* Status Indicator / Underline animation */}
@@ -240,11 +195,53 @@ export default function Home() {
                     onClick={() => {
                       setPromoCode("mediacup20");
                       setPromoStatus("success");
-                      setPrice(26400);
                     }}
                     className="text-white/40 text-xs uppercase tracking-widest hover:text-gold transition-colors underline decoration-dotted underline-offset-4"
                   >
                     Promokoddan foydalanish
+                  </button>
+                </div>
+
+                {/* Subscription Options */}
+                <div className="grid grid-cols-2 gap-4 mt-4 mb-4">
+                  <button
+                    onClick={() => setSubscription('monthly')}
+                    className={`relative p-4 rounded-2xl border transition-all duration-300 flex flex-col items-center justify-center gap-1 group ${subscription === 'monthly'
+                      ? 'bg-white/10 border-gold/50 shadow-[0_0_20px_rgba(255,184,0,0.1)]'
+                      : 'bg-white/5 border-white/10 hover:bg-white/10 hover:border-white/20'
+                      }`}
+                  >
+                    <span className={`text-xs font-bold uppercase tracking-[0.2em] transition-colors ${subscription === 'monthly' ? 'text-gold' : 'text-white/50'
+                      }`}>
+                      Oylik
+                    </span>
+                    <div className="flex flex-col items-center">
+                      <span className={`font-display font-black text-2xl transition-colors ${subscription === 'monthly' ? 'text-white' : 'text-white/80'
+                        }`}>
+                        {(promoStatus === 'success' ? PRICES.monthly * 0.8 : PRICES.monthly).toLocaleString().replace(/,/g, " ")}
+                        <span className="text-xs ml-1 font-sans font-normal text-white/40">so'm</span>
+                      </span>
+                    </div>
+                  </button>
+
+                  <button
+                    onClick={() => setSubscription('yearly')}
+                    className={`relative p-4 rounded-2xl border transition-all duration-300 flex flex-col items-center justify-center gap-1 group ${subscription === 'yearly'
+                      ? 'bg-white/10 border-gold/50 shadow-[0_0_20px_rgba(255,184,0,0.1)]'
+                      : 'bg-white/5 border-white/10 hover:bg-white/10 hover:border-white/20'
+                      }`}
+                  >
+                    <span className={`text-xs font-bold uppercase tracking-[0.2em] transition-colors ${subscription === 'yearly' ? 'text-gold' : 'text-white/50'
+                      }`}>
+                      Yillik
+                    </span>
+                    <div className="flex flex-col items-center">
+                      <span className={`font-display font-black text-2xl transition-colors ${subscription === 'yearly' ? 'text-white' : 'text-white/80'
+                        }`}>
+                        {(promoStatus === 'success' ? PRICES.yearly * 0.8 : PRICES.yearly).toLocaleString().replace(/,/g, " ")}
+                        <span className="text-xs ml-1 font-sans font-normal text-white/40">so'm</span>
+                      </span>
+                    </div>
                   </button>
                 </div>
 
@@ -266,10 +263,12 @@ export default function Home() {
                   </div>
                   <div className="text-right">
                     {promoStatus === 'success' && (
-                      <span className="text-sm text-white/30 line-through block mb-1">33 000 so'm</span>
+                      <span className="text-sm text-white/30 line-through block mb-1">
+                        {currentPrice.toLocaleString().replace(/,/g, " ")} so'm
+                      </span>
                     )}
                     <span className="text-4xl font-black text-white font-display uppercase">
-                      {price.toLocaleString().replace(/,/g, " ")} <span className="text-lg text-gold ml-1">so'm</span>
+                      {finalPrice.toLocaleString().replace(/,/g, " ")} <span className="text-lg text-gold ml-1">so'm</span>
                     </span>
                   </div>
                 </div>
