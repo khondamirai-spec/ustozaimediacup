@@ -8,7 +8,7 @@ import {
 
 const PRICES = {
   monthly: 39000,
-  yearly: 277000
+  yearly: 429000
 };
 
 export default function Home() {
@@ -89,11 +89,12 @@ export default function Home() {
   };
 
   const currentPrice = PRICES[subscription];
-  const discount = promoStatus === "success" ? 0.2 : 0;
-  const finalPrice = currentPrice * (1 - discount);
+  const finalPrice = promoStatus === "success"
+    ? (subscription === "yearly" ? 299000 : currentPrice * 0.8)
+    : currentPrice;
 
   return (
-    <div className={`min-h-screen w-full overflow-x-hidden relative flex flex-col font-body transition-opacity duration-700 ${mounted ? 'opacity-100' : 'opacity-0'} pb-12`}>
+    <div className={`min-h-screen w-full overflow-x-hidden relative flex flex-col font-sans transition-opacity duration-700 ${mounted ? 'opacity-100' : 'opacity-0'} pb-12`}>
       {/* Abstract Background Glows */}
       <div className="absolute top-[10%] left-[-10%] w-[500px] h-[500px] bg-blue-500/10 blur-[150px] rounded-full pointer-events-none z-0"></div>
       <div className="absolute right-[-10%] top-[40%] w-[400px] h-[400px] bg-sky-500/10 blur-[150px] rounded-full pointer-events-none z-0"></div>
@@ -108,30 +109,26 @@ export default function Home() {
             <div className="inline-flex items-center gap-2 border border-yellow-500/20 bg-yellow-500/10 px-4 py-1.5 rounded-full mb-6 mt-2">
               <Trophy className="w-3.5 h-3.5 text-yellow-500" />
               <span className="text-yellow-500 text-[10px] sm:text-xs font-bold uppercase tracking-widest">
-                MEDIA LIGA • MAXSUS TAKLIF
+                MEDIA CUP • MAXSUS TAKLIF
               </span>
             </div>
 
-            <h1 className="text-3xl sm:text-5xl lg:text-6xl font-black mb-4 sm:mb-6 tracking-tight leading-[1.1] text-white">
-              Ustoz AI
+            <h1 className="text-3xl sm:text-5xl lg:text-6xl font-black mb-10 sm:mb-12 tracking-tight leading-[1.1] text-white font-heading">
+              Ustoz AI Media Cup
             </h1>
 
-            <p className="text-slate-300 text-base sm:text-lg mb-6 sm:mb-8 font-medium">
-              Barcha kurslarga <span className="text-blue-400 font-bold">20% chegirma</span> va
-              <br className="hidden sm:block" /> Media Liga imkoniyatlari.
-            </p>
 
             <button
               onClick={() => document.getElementById('payment-form')?.scrollIntoView({ behavior: 'smooth' })}
-              className="lg:hidden bg-blue-500 hover:bg-blue-600 transition-colors text-white rounded-full px-6 py-3.5 font-bold flex items-center justify-center gap-2 mb-4 w-full sm:w-auto shadow-lg shadow-blue-500/20"
+              className="lg:hidden bg-blue-500 hover:bg-blue-600 transition-colors text-white rounded-full px-6 py-4 font-black text-lg flex items-center justify-center gap-2 mb-4 w-full sm:w-auto shadow-lg shadow-blue-500/20"
             >
-              Hoziroq obuna bo'ling <ArrowDown className="w-4 h-4" />
+              Imkoniyatni qo'ldan boy bermang <ArrowDown className="w-5 h-5" />
             </button>
             <button
               onClick={() => document.getElementById('payment-form')?.scrollIntoView({ behavior: 'smooth' })}
-              className="hidden lg:flex bg-blue-500 hover:bg-blue-600 transition-colors text-white rounded-full px-8 py-3.5 font-bold items-center gap-2 shadow-lg shadow-blue-500/20 hover:scale-105 active:scale-95 ease-in-out"
+              className="hidden lg:flex bg-blue-500 hover:bg-blue-600 transition-colors text-white rounded-full px-10 py-4 font-black text-xl items-center gap-3 shadow-lg shadow-blue-500/20 hover:scale-105 active:scale-95 ease-in-out"
             >
-              Hoziroq obuna bo'ling <ArrowDown className="w-4 h-4 ml-1" />
+              Imkoniyatni qo'ldan boy bermang <ArrowDown className="w-5 h-5 ml-1" />
             </button>
           </div>
 
@@ -148,50 +145,20 @@ export default function Home() {
             </span>
           </div>
 
-          {/* Features Section */}
-          <div className="mt-8">
-            <div className="flex items-center gap-3 mb-8">
-              <div className="w-1.5 h-[28px] bg-blue-500 rounded-full shadow-[0_0_10px_rgba(59,130,246,0.8)]" />
-              <h2 className="text-xl sm:text-2xl font-bold text-white tracking-wide">Nima uchun Ustoz AI?</h2>
-            </div>
+          {/* Added Promotional Image Block (Screenshot_7) */}
+          <div className="mt-4 sm:mt-6 w-full relative rounded-3xl sm:rounded-[2.5rem] overflow-hidden shadow-[0_0_60px_rgba(0,0,0,0.6)] group bg-[#020817] border border-slate-800/60">
+            {/* Subtle Inner Glow to blend */}
+            <div className="absolute inset-0 bg-gradient-to-br from-blue-500/10 via-transparent to-transparent opacity-50 mix-blend-overlay z-10 pointer-events-none"></div>
 
-            <div className="space-y-6">
-              <div className="flex items-start gap-4">
-                <div className="flex bg-[#1E293B] p-3 h-12 w-12 rounded-full items-center justify-center shrink-0 border border-slate-700">
-                  <FileText className="w-6 h-6 text-slate-200" />
-                </div>
-                <div className="pt-0.5">
-                  <h3 className="font-bold text-base sm:text-lg text-white mb-1">19+ Professional kurslar</h3>
-                  <p className="text-slate-400 text-sm leading-relaxed max-w-sm">
-                    IT, Marketing, Biznes va barcha sohalar bo'yicha mukammal bilimlar.
-                  </p>
-                </div>
-              </div>
+            {/* The image itself with 'lighten' to drop its dark background and blend into our container */}
+            <img
+              src="/цап.png"
+              alt="Eng Foydali Tanlov"
+              className="w-full h-auto object-cover relative z-0 transition-transform duration-700 ease-out group-hover:scale-[1.02] mix-blend-screen opacity-90 hover:opacity-100"
+            />
 
-              <div className="flex items-start gap-4">
-                <div className="flex bg-[#1E293B] p-3 h-12 w-12 rounded-full items-center justify-center shrink-0 border border-slate-700">
-                  <Target className="w-6 h-6 text-slate-200" />
-                </div>
-                <div className="pt-0.5">
-                  <h3 className="font-bold text-base sm:text-lg text-white mb-1">SMM va Target sirlari</h3>
-                  <p className="text-slate-400 text-sm leading-relaxed max-w-sm">
-                    Zamonaviy kasblarni o'rganib, daromadga chiqing.
-                  </p>
-                </div>
-              </div>
-
-              <div className="flex items-start gap-4">
-                <div className="flex bg-[#1E293B] p-3 h-12 w-12 rounded-full items-center justify-center shrink-0 border border-slate-700">
-                  <Award className="w-6 h-6 text-slate-200" />
-                </div>
-                <div className="pt-0.5">
-                  <h3 className="font-bold text-base sm:text-lg text-white mb-1">Rasmiy sertifikat</h3>
-                  <p className="text-slate-400 text-sm leading-relaxed max-w-sm">
-                    O'quv kurslarini yakunlang va ishga joylashish uchun sertifikat oling.
-                  </p>
-                </div>
-              </div>
-            </div>
+            {/* Inset Shadow to erase hard image borders and feather the edges */}
+            <div className="absolute inset-0 rounded-3xl sm:rounded-[2.5rem] shadow-[inset_0_0_40px_3px_#020817] z-10 pointer-events-none"></div>
           </div>
         </div>
 
@@ -236,8 +203,14 @@ export default function Home() {
                   <div className="flex flex-col">
                     <span className="text-slate-300 font-bold text-xs sm:text-sm uppercase tracking-wider mb-1.5">YILLIK OBUNA</span>
                     <div className="flex items-end gap-2.5 mb-1.5">
-                      <span className="text-2xl sm:text-3xl font-black text-white leading-none">{(PRICES.yearly * 0.8).toLocaleString('en-US')} so'm</span>
-                      <span className="text-slate-500 line-through text-sm sm:text-base leading-none mb-0.5">{PRICES.yearly.toLocaleString('en-US')}</span>
+                      <span className="text-2xl sm:text-3xl font-black text-white leading-none">
+                        {(promoStatus === "success" ? 299000 : PRICES.yearly).toLocaleString('en-US')} so'm
+                      </span>
+                      {promoStatus === "success" && (
+                        <span className="text-slate-500 line-through text-sm sm:text-base leading-none mb-0.5">
+                          {PRICES.yearly.toLocaleString('en-US')}
+                        </span>
+                      )}
                     </div>
                     <span className="text-slate-400 text-xs sm:text-sm">yiliga bir marta to'lov</span>
                   </div>

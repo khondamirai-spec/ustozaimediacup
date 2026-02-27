@@ -8,6 +8,8 @@
   /* Tailwind gray-900 */
   --color-panel: #162032;
   /* Form panel color */
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif;
+  --font-heading: var(--font-montserrat), var(--font-sans);
 }
 
 body {
