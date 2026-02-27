@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import {
   Trophy, ArrowDown, Play, FileText, Target, Award, Tag,
-  Check, User, Phone, CheckCircle2, Lock
+  Check, User, Phone, CheckCircle2, Lock, Flame
 } from "lucide-react";
 
 const PRICES = {
@@ -122,13 +122,13 @@ export default function Home() {
               onClick={() => document.getElementById('payment-form')?.scrollIntoView({ behavior: 'smooth' })}
               className="lg:hidden bg-blue-500 hover:bg-blue-600 transition-colors text-white rounded-full px-6 py-4 font-black text-lg flex items-center justify-center gap-2 mb-4 w-full sm:w-auto shadow-lg shadow-blue-500/20"
             >
-              Imkoniyatni qo'ldan boy bermang <ArrowDown className="w-5 h-5" />
+              Hoziroq ulgurib qoling <ArrowDown className="w-5 h-5" />
             </button>
             <button
               onClick={() => document.getElementById('payment-form')?.scrollIntoView({ behavior: 'smooth' })}
               className="hidden lg:flex bg-blue-500 hover:bg-blue-600 transition-colors text-white rounded-full px-10 py-4 font-black text-xl items-center gap-3 shadow-lg shadow-blue-500/20 hover:scale-105 active:scale-95 ease-in-out"
             >
-              Imkoniyatni qo'ldan boy bermang <ArrowDown className="w-5 h-5 ml-1" />
+              Hoziroq ulgurib qoling <ArrowDown className="w-5 h-5 ml-1" />
             </button>
           </div>
 
@@ -195,8 +195,8 @@ export default function Home() {
                   : "border-slate-800 bg-[#101724] hover:bg-[#151d2d] hover:border-slate-700"
                   }`}
               >
-                <div className="absolute -top-[14px] right-4 bg-yellow-400 text-black text-[10px] sm:text-[11px] font-bold px-3 py-1.5 rounded-full flex items-center gap-1 shadow-md z-10 leading-none">
-                  <span className="text-[12px] leading-none mb-[1px]">★</span> TAVSIYA ETILADI
+                <div className="absolute -top-[14px] right-4 bg-yellow-400 text-black text-[10px] sm:text-[11px] font-bold px-3 py-1.5 rounded-full flex items-center gap-1 shadow-md z-10 leading-none uppercase">
+                  <Flame className="w-3.5 h-3.5 text-orange-600 fill-orange-600" /> ENG KO'P SOTILGAN
                 </div>
 
                 <div className="flex justify-between items-start w-full pr-1 sm:pr-2 pt-1">
