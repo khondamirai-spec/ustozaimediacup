@@ -1,7 +1,10 @@
 "use client";
 
-import Image from "next/image";
 import { useState, useEffect } from "react";
+import {
+  Trophy, ArrowDown, Play, FileText, Target, Award, Tag,
+  Check, User, Phone, CheckCircle2, Lock
+} from "lucide-react";
 
 const PRICES = {
   monthly: 39000,
@@ -10,12 +13,13 @@ const PRICES = {
 
 export default function Home() {
   const [phone, setPhone] = useState("+998 ");
-  const [promoCode, setPromoCode] = useState("");
-  const [promoStatus, setPromoStatus] = useState<"idle" | "success" | "error">("idle");
-  const [subscription, setSubscription] = useState<"monthly" | "yearly">("monthly");
-
-  // Animation state
+  const [fullName, setFullName] = useState("");
+  const [promoCode] = useState("MEDIACUP20");
+  const [promoStatus] = useState<"success" | "idle" | "error">("success");
+  const [subscription, setSubscription] = useState<"monthly" | "yearly">("yearly");
+  const [isPaymentLoading, setIsPaymentLoading] = useState(false);
   const [mounted, setMounted] = useState(false);
+
   useEffect(() => {
     setMounted(true);
   }, []);
@@ -32,17 +36,55 @@ export default function Home() {
     if (rawDigits.length >= 6) formatted += "-" + rawDigits.substring(5, 7);
     if (rawDigits.length >= 8) formatted += "-" + rawDigits.substring(7, 9);
 
-    // Max length check
     if (rawDigits.length <= 9) {
       setPhone("+998 " + formatted);
     }
   };
 
-  const handleApplyPromo = () => {
-    if (promoCode.trim().toLowerCase() === "mediacup20") {
-      setPromoStatus("success");
-    } else {
-      setPromoStatus("error");
+  const handlePayment = async () => {
+    if (!fullName.trim()) {
+      alert("Iltimos, ismingizni kiriting");
+      return;
+    }
+
+    const rawPhone = phone.replace(/[^\d+]/g, "");
+    if (rawPhone.length < 13) {
+      alert("Iltimos, telefon raqamingizni to'liq kiriting");
+      return;
+    }
+
+    setIsPaymentLoading(true);
+
+    try {
+      const response = await fetch("https://dev-api.ustozaibot.uz/api/v1/premium/generate-payment-url", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          phone: rawPhone,
+          fullname: fullName.trim(),
+          playType: subscription === "monthly" ? "MONTHLY" : "YEARLY",
+          code: promoStatus === "success" ? promoCode : undefined,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.message || "To'lov linkini olishda xatolik yuz berdi");
+      }
+
+      if (data.link) {
+        window.location.href = data.link;
+      } else {
+        throw new Error("API muvaffaqiyatli javob berdi, lekin link topilmadi");
+      }
+    } catch (err: any) {
+      console.error("Payment error:", err);
+      alert(err.message || "Tizimda xatolik yuz berdi. Keyinroq qayta urinib ko'ring.");
+    } finally {
+      setIsPaymentLoading(false);
     }
   };
 
@@ -51,244 +93,257 @@ export default function Home() {
   const finalPrice = currentPrice * (1 - discount);
 
   return (
-    <div className={`min-h-screen relative flex flex-col font-body transition-opacity duration-700 ${mounted ? 'opacity-100' : 'opacity-0'}`}>
+    <div className={`min-h-screen w-full overflow-x-hidden relative flex flex-col font-body transition-opacity duration-700 ${mounted ? 'opacity-100' : 'opacity-0'} pb-12`}>
+      {/* Abstract Background Glows */}
+      <div className="absolute top-[10%] left-[-10%] w-[500px] h-[500px] bg-blue-500/10 blur-[150px] rounded-full pointer-events-none z-0"></div>
+      <div className="absolute right-[-10%] top-[40%] w-[400px] h-[400px] bg-sky-500/10 blur-[150px] rounded-full pointer-events-none z-0"></div>
 
-      {/* Background Ambience */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
-        <div className="absolute top-[-10%] left-[-10%] w-[60%] h-[60%] bg-[#1E3A5F] rounded-full blur-[150px] opacity-40 animate-pulse" />
-        <div className="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] bg-[#0066FF] rounded-full blur-[120px] opacity-20" />
+      <main className="flex-1 w-full max-w-[1240px] mx-auto px-4 sm:px-6 py-6 sm:py-12 z-10 flex flex-col lg:flex-row gap-8 lg:gap-16 items-start justify-between">
 
-        {/* Geometric Shapes */}
-        <div className="absolute top-20 right-20 w-32 h-32 border border-white/5 rounded-full" />
-        <div className="absolute bottom-40 left-10 w-24 h-24 border border-white/5 rotate-45" />
-      </div>
+        {/* LEFT COLUMN: HERO & FEATURES */}
+        <div className="w-full lg:w-1/2 flex flex-col gap-6 lg:gap-8 pt-4">
 
-      {/* Header removed */}
-
-      {/* Main Page Title */}
-      <section className="w-full max-w-[1400px] mx-auto px-6 pt-12 pb-0 text-center z-10">
-        <h1 className="font-display font-black text-5xl md:text-8xl tracking-tight text-white mb-4 glow-text uppercase">
-          USTOZ AI <span className="text-gradient-gold">MEDIA CUP</span>
-        </h1>
-
-        {/* Mobile Scroll Indicator */}
-        <button
-          onClick={() => document.getElementById('register-section')?.scrollIntoView({ behavior: 'smooth' })}
-          className="md:hidden mx-auto mt-6 flex flex-col items-center gap-2 cursor-pointer z-50 pb-2"
-        >
-          <span className="text-lg font-black tracking-[0.2em] uppercase text-white drop-shadow-[0_0_10px_rgba(255,255,255,0.8)]">RO'YXATDAN O'TISH</span>
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={3} stroke="currentColor" className="w-6 h-6 text-gold drop-shadow-[0_0_15px_rgba(255,184,0,0.8)]">
-            <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
-          </svg>
-        </button>
-      </section>
-
-      {/* Main Content */}
-      <main className="flex-1 w-full max-w-[1400px] mx-auto px-4 md:px-8 py-4 z-10 flex flex-col md:flex-row gap-8 lg:gap-16 items-stretch justify-center -mt-2">
-
-        {/* Left Column: Video (45%) */}
-        <div className="w-full md:w-[40%] flex flex-col gap-6">
-          <div className="relative w-full aspect-[9/16] md:aspect-auto md:flex-1 md:h-full rounded-3xl overflow-hidden glass-panel border-white/20 shadow-2xl group cursor-pointer transition-transform duration-500 hover:scale-[1.02]">
-            {/* Main Featured Image / Video Placeholder */}
-            <Image
-              src="/Full_2.png"
-              alt="Ustoz AI Media Cup"
-              fill
-              className="object-cover"
-              priority
-            />
-
-            {/* Play Button Overlay */}
-            <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-transparent to-black/60 flex items-center justify-center">
-              <div className="w-20 h-20 rounded-full border-2 border-white/50 flex items-center justify-center bg-white/10 backdrop-blur-md group-hover:bg-white/20 group-hover:scale-110 transition-all duration-500">
-                <div className="w-0 h-0 border-t-[10px] border-t-transparent border-l-[18px] border-l-white border-b-[10px] border-b-transparent ml-1"></div>
-              </div>
+          {/* Header Texts */}
+          <div className="flex flex-col items-center lg:items-start text-center lg:text-left">
+            <div className="inline-flex items-center gap-2 border border-yellow-500/20 bg-yellow-500/10 px-4 py-1.5 rounded-full mb-6 mt-2">
+              <Trophy className="w-3.5 h-3.5 text-yellow-500" />
+              <span className="text-yellow-500 text-[10px] sm:text-xs font-bold uppercase tracking-widest">
+                MEDIA LIGA • MAXSUS TAKLIF
+              </span>
             </div>
 
-            {/* Overlay Gradient */}
-            <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-transparent to-transparent pointer-events-none" />
+            <h1 className="text-3xl sm:text-5xl lg:text-6xl font-black mb-4 sm:mb-6 tracking-tight leading-[1.1] text-white">
+              Ustoz AI
+            </h1>
+
+            <p className="text-slate-300 text-base sm:text-lg mb-6 sm:mb-8 font-medium">
+              Barcha kurslarga <span className="text-blue-400 font-bold">20% chegirma</span> va
+              <br className="hidden sm:block" /> Media Liga imkoniyatlari.
+            </p>
+
+            <button
+              onClick={() => document.getElementById('payment-form')?.scrollIntoView({ behavior: 'smooth' })}
+              className="lg:hidden bg-blue-500 hover:bg-blue-600 transition-colors text-white rounded-full px-6 py-3.5 font-bold flex items-center justify-center gap-2 mb-4 w-full sm:w-auto shadow-lg shadow-blue-500/20"
+            >
+              Hoziroq obuna bo'ling <ArrowDown className="w-4 h-4" />
+            </button>
+            <button
+              onClick={() => document.getElementById('payment-form')?.scrollIntoView({ behavior: 'smooth' })}
+              className="hidden lg:flex bg-blue-500 hover:bg-blue-600 transition-colors text-white rounded-full px-8 py-3.5 font-bold items-center gap-2 shadow-lg shadow-blue-500/20 hover:scale-105 active:scale-95 ease-in-out"
+            >
+              Hoziroq obuna bo'ling <ArrowDown className="w-4 h-4 ml-1" />
+            </button>
           </div>
 
-          {/* Promocode Badge */}
-          <div className="flex flex-col items-center justify-center p-6 md:p-8 glass-panel rounded-3xl bg-white/5 relative overflow-hidden group border-white/10">
-            <div className="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-transparent via-gold to-transparent opacity-50" />
-            <span className="font-display text-gold uppercase tracking-[0.4em] text-[11px] md:text-xs font-bold mb-2 md:mb-3 opacity-80">Rasmiy Promokod</span>
-            <div className="font-display text-2xl md:text-4xl font-black text-white tracking-[0.2em] relative z-10 group-hover:scale-105 transition-transform duration-500">
-              MEDIACUP20
+          {/* Video Box */}
+          <div className="relative w-full aspect-video bg-[#0f1524]/80 backdrop-blur-md rounded-2xl border border-slate-700/60 flex flex-col items-center justify-center group overflow-hidden cursor-pointer shadow-xl transition-all duration-300 hover:border-slate-600 mt-2">
+            <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent z-10" />
+
+            <div className="z-20 w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-blue-600/30 flex items-center justify-center backdrop-blur-sm border border-blue-500/50 group-hover:bg-blue-600/50 group-hover:scale-110 transition-all shadow-[0_0_20px_rgba(59,130,246,0.3)]">
+              <div className="w-0 h-0 border-t-[7px] border-t-transparent border-l-[12px] border-l-white border-b-[7px] border-b-transparent ml-1"></div>
             </div>
-            <div className="absolute -right-4 -bottom-4 w-32 h-32 bg-gold/5 rounded-full blur-2xl group-hover:bg-gold/10 transition-colors" />
+
+            <span className="z-20 mt-4 text-slate-300 text-xs sm:text-sm font-bold tracking-[0.2em] uppercase">
+              VIDEONI KO'RISH
+            </span>
+          </div>
+
+          {/* Features Section */}
+          <div className="mt-8">
+            <div className="flex items-center gap-3 mb-8">
+              <div className="w-1.5 h-[28px] bg-blue-500 rounded-full shadow-[0_0_10px_rgba(59,130,246,0.8)]" />
+              <h2 className="text-xl sm:text-2xl font-bold text-white tracking-wide">Nima uchun Ustoz AI?</h2>
+            </div>
+
+            <div className="space-y-6">
+              <div className="flex items-start gap-4">
+                <div className="flex bg-[#1E293B] p-3 h-12 w-12 rounded-full items-center justify-center shrink-0 border border-slate-700">
+                  <FileText className="w-6 h-6 text-slate-200" />
+                </div>
+                <div className="pt-0.5">
+                  <h3 className="font-bold text-base sm:text-lg text-white mb-1">19+ Professional kurslar</h3>
+                  <p className="text-slate-400 text-sm leading-relaxed max-w-sm">
+                    IT, Marketing, Biznes va barcha sohalar bo'yicha mukammal bilimlar.
+                  </p>
+                </div>
+              </div>
+
+              <div className="flex items-start gap-4">
+                <div className="flex bg-[#1E293B] p-3 h-12 w-12 rounded-full items-center justify-center shrink-0 border border-slate-700">
+                  <Target className="w-6 h-6 text-slate-200" />
+                </div>
+                <div className="pt-0.5">
+                  <h3 className="font-bold text-base sm:text-lg text-white mb-1">SMM va Target sirlari</h3>
+                  <p className="text-slate-400 text-sm leading-relaxed max-w-sm">
+                    Zamonaviy kasblarni o'rganib, daromadga chiqing.
+                  </p>
+                </div>
+              </div>
+
+              <div className="flex items-start gap-4">
+                <div className="flex bg-[#1E293B] p-3 h-12 w-12 rounded-full items-center justify-center shrink-0 border border-slate-700">
+                  <Award className="w-6 h-6 text-slate-200" />
+                </div>
+                <div className="pt-0.5">
+                  <h3 className="font-bold text-base sm:text-lg text-white mb-1">Rasmiy sertifikat</h3>
+                  <p className="text-slate-400 text-sm leading-relaxed max-w-sm">
+                    O'quv kurslarini yakunlang va ishga joylashish uchun sertifikat oling.
+                  </p>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
 
-        {/* Right Column: Form (55%) */}
-        <div className="w-full md:w-[60%] flex flex-col gap-6">
-          <div id="register-section" className="glass-panel p-6 md:p-12 rounded-[2.5rem] border-white/10 bg-white/5 shadow-2xl relative overflow-hidden">
+        {/* RIGHT COLUMN: PAYMENT FORM */}
+        <div className="w-full lg:w-1/2 flex lg:justify-end mt-4 lg:mt-0" id="payment-form">
+          <div className="w-full max-w-[480px] bg-[#162132] rounded-3xl p-6 sm:p-8 border border-slate-700/70 shadow-2xl relative lg:ml-auto">
 
-            {/* Abstract background for form */}
-            <div className="absolute -top-24 -right-24 w-64 h-64 bg-gold/5 rounded-full blur-[80px]" />
-            <div className="absolute -bottom-24 -left-24 w-64 h-64 bg-electric/5 rounded-full blur-[80px]" />
+            <h3 className="text-[11px] text-slate-400 font-bold uppercase tracking-[0.15em] mb-4 text-center sm:text-left">PROMOKOD</h3>
 
-            {/* Form Header */}
-            <div className="mb-6 md:mb-10 text-center md:text-left relative z-10">
-              <h2 className="text-3xl md:text-6xl font-black text-white mb-2 md:mb-3 font-display tracking-tight uppercase leading-tight">
-                RO'YXATDAN <span className="text-gradient-gold">O'TISH</span>
-              </h2>
+            {/* Promo Label Badge */}
+            <div className="inline-flex items-center justify-between border border-[#1e4a2d] bg-[#0c2e17] rounded-full px-3 sm:px-4 py-3 mb-3 w-full sm:w-max sm:min-w-[300px]">
+              <div className="flex items-center gap-2 text-white font-mono font-bold tracking-widest uppercase">
+                <Tag className="w-5 h-5 text-green-500 mr-1" />
+                MEDIACUP20
+              </div>
+              <div className="flex items-center gap-1.5 border border-[#16944e]/30 bg-[#0d5930]/80 rounded-full px-3 py-1 text-[10px] text-green-400 font-bold ml-4">
+                <Check className="w-3 h-3" strokeWidth={3} />
+                AKTIV
+              </div>
             </div>
 
-            <div className="flex flex-col gap-6 relative z-10">
-              {/* Name Input */}
-              <div className="space-y-2">
-                <label className="block text-[10px] font-bold text-white/50 mb-1 uppercase tracking-[0.2em] ml-1">To'liq ismingiz</label>
-                <input
-                  type="text"
-                  placeholder="Ism Familiya"
-                  className="w-full bg-white/[0.03] border border-white/10 rounded-2xl px-6 py-5 text-white hover:border-white/20 focus:border-gold/50 transition-all outline-none text-lg placeholder:text-white/10 shadow-xl"
-                />
-              </div>
+            <div className="flex items-center gap-1.5 text-green-500 text-xs sm:text-sm font-medium mb-6 sm:mb-8 justify-center sm:justify-start">
+              <CheckCircle2 className="w-4 h-4 shrink-0" />
+              20% chegirma muvaffaqiyatli qo'llanildi!
+            </div>
 
-              {/* Phone Input */}
-              <div className="space-y-2">
-                <label className="block text-[10px] font-bold text-white/50 mb-1 uppercase tracking-[0.2em] ml-1">Telefon raqam</label>
-                <input
-                  type="text"
-                  value={phone}
-                  onChange={handlePhoneChange}
-                  className="w-full bg-white/[0.03] border border-white/10 rounded-2xl px-6 py-5 text-white hover:border-white/20 focus:border-gold/50 transition-all outline-none font-mono text-xl tracking-wider placeholder:text-white/10 shadow-xl"
-                />
-              </div>
+            {/* Subscription Cards */}
+            <div className="flex flex-col gap-4 mb-8">
+              {/* YEARLY PLAN */}
+              <button
+                onClick={() => setSubscription("yearly")}
+                className={`relative flex flex-col p-4 sm:p-5 rounded-2xl border-2 transition-all duration-300 text-left ${subscription === "yearly"
+                  ? "border-blue-500 bg-[#1e2e46] shadow-[0_0_20px_rgba(59,130,246,0.1)]"
+                  : "border-slate-800 bg-[#101724] hover:bg-[#151d2d] hover:border-slate-700"
+                  }`}
+              >
+                <div className="absolute -top-[14px] right-4 bg-yellow-400 text-black text-[10px] sm:text-[11px] font-bold px-3 py-1.5 rounded-full flex items-center gap-1 shadow-md z-10 leading-none">
+                  <span className="text-[12px] leading-none mb-[1px]">★</span> TAVSIYA ETILADI
+                </div>
 
-              <div className="mt-6 flex flex-col gap-6">
-                {/* Promo Code Input Field */}
-                <div className="relative group">
+                <div className="flex justify-between items-start w-full pr-1 sm:pr-2 pt-1">
+                  <div className="flex flex-col">
+                    <span className="text-slate-300 font-bold text-xs sm:text-sm uppercase tracking-wider mb-1.5">YILLIK OBUNA</span>
+                    <div className="flex items-end gap-2.5 mb-1.5">
+                      <span className="text-2xl sm:text-3xl font-black text-white leading-none">{(PRICES.yearly * 0.8).toLocaleString('en-US')} so'm</span>
+                      <span className="text-slate-500 line-through text-sm sm:text-base leading-none mb-0.5">{PRICES.yearly.toLocaleString('en-US')}</span>
+                    </div>
+                    <span className="text-slate-400 text-xs sm:text-sm">yiliga bir marta to'lov</span>
+                  </div>
+                  <div className="mt-1">
+                    {subscription === "yearly" ? (
+                      <div className="w-5 h-5 sm:w-6 sm:h-6 rounded-full bg-blue-500 flex items-center justify-center shrink-0">
+                        <Check className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-white" strokeWidth={3} />
+                      </div>
+                    ) : (
+                      <div className="w-5 h-5 sm:w-6 sm:h-6 rounded-full border border-slate-600 bg-slate-800/50 shrink-0" />
+                    )}
+                  </div>
+                </div>
+              </button>
+
+              {/* MONTHLY PLAN */}
+              <button
+                onClick={() => setSubscription("monthly")}
+                className={`relative flex flex-col p-4 sm:p-5 rounded-2xl border-2 transition-all duration-300 text-left ${subscription === "monthly"
+                  ? "border-blue-500 bg-[#1e2e46] shadow-[0_0_20px_rgba(59,130,246,0.1)]"
+                  : "border-slate-800 bg-[#101724] hover:bg-[#151d2d] hover:border-slate-700"
+                  }`}
+              >
+                <div className="flex justify-between items-start w-full pr-1 sm:pr-2">
+                  <div className="flex flex-col">
+                    <span className="text-slate-300 font-bold text-xs sm:text-sm uppercase tracking-wider mb-1.5">OYLIK OBUNA</span>
+                    <div className="flex items-end gap-2.5 mb-1.5">
+                      <span className="text-2xl sm:text-3xl font-black text-white leading-none">{(PRICES.monthly * 0.8).toLocaleString('en-US')} so'm</span>
+                      <span className="text-slate-500 line-through text-sm sm:text-base leading-none mb-0.5">{PRICES.monthly.toLocaleString('en-US')}</span>
+                    </div>
+                    <span className="text-slate-400 text-xs sm:text-sm">oyiga bir marta to'lov</span>
+                  </div>
+                  <div className="mt-1">
+                    {subscription === "monthly" ? (
+                      <div className="w-5 h-5 sm:w-6 sm:h-6 rounded-full bg-blue-500 flex items-center justify-center shrink-0">
+                        <Check className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-white" strokeWidth={3} />
+                      </div>
+                    ) : (
+                      <div className="w-5 h-5 sm:w-6 sm:h-6 rounded-full border border-slate-600 bg-slate-800/50 shrink-0" />
+                    )}
+                  </div>
+                </div>
+              </button>
+            </div>
+
+            {/* Single Input group block */}
+            <div className="space-y-4 mb-6">
+              <div className="flex flex-col">
+                <label className="text-[11px] text-slate-400 font-bold uppercase tracking-[0.1em] mb-2 pl-1">TO'LIQ ISMINGIZ</label>
+                <div className="relative">
+                  <div className="absolute inset-y-0 left-4 flex items-center pointer-events-none">
+                    <User className="h-5 w-5 text-slate-500" />
+                  </div>
                   <input
                     type="text"
-                    className={`w-full bg-transparent border-b-2 py-4 text-center font-display text-2xl uppercase tracking-[0.3em] outline-none transition-colors placeholder:text-white/5 placeholder:text-sm ${promoStatus === 'success'
-                      ? 'border-green-500 text-green-500'
-                      : promoStatus === 'error'
-                        ? 'border-red-500 text-red-500'
-                        : 'border-white/10 text-gold focus:border-gold'
-                      }`}
-                    placeholder="PROMOKOD KIRITING"
-                    value={promoCode}
-                    onChange={(e) => {
-                      setPromoCode(e.target.value);
-                      setPromoStatus('idle');
-                    }}
+                    value={fullName}
+                    onChange={(e) => setFullName(e.target.value)}
+                    placeholder="Abdulla Qodiriy"
+                    className="w-full bg-[#101724] border border-slate-700/80 rounded-2xl py-3.5 pl-12 pr-4 text-white focus:outline-none focus:border-blue-500/60 transition-colors placeholder:text-slate-600 text-[15px] sm:text-base shadow-inner shadow-black/20"
                   />
-                  {/* Status Indicator / Underline animation */}
-                  <div className={`absolute bottom-0 left-1/2 -translate-x-1/2 h-[2px] transition-all duration-500 group-focus-within:w-full ${promoStatus === 'success' ? 'w-full bg-green-500' :
-                    promoStatus === 'error' ? 'w-full bg-red-500' :
-                      'w-0 bg-gold'
-                    }`} />
-
-                  {/* Success Checkmark */}
-                  {promoStatus === 'success' && (
-                    <div className="absolute right-0 top-1/2 -translate-y-1/2 text-green-500 text-xl animate-in fade-in zoom-in duration-300">
-                      ✓
-                    </div>
-                  )}
                 </div>
+              </div>
 
-                {/* Quick Apply Promo Link */}
-                <div className="text-center -mt-2 mb-2">
-                  <button
-                    onClick={() => {
-                      setPromoCode("mediacup20");
-                      setPromoStatus("success");
-                    }}
-                    className="text-white/40 text-xs uppercase tracking-widest hover:text-gold transition-colors underline decoration-dotted underline-offset-4"
-                  >
-                    Promokoddan foydalanish
-                  </button>
-                </div>
-
-                {/* Subscription Options */}
-                <div className="grid grid-cols-2 gap-4 mt-4 mb-4">
-                  <button
-                    onClick={() => setSubscription('monthly')}
-                    className={`relative p-4 rounded-2xl border transition-all duration-300 flex flex-col items-center justify-center gap-1 group ${subscription === 'monthly'
-                      ? 'bg-white/10 border-gold/50 shadow-[0_0_20px_rgba(255,184,0,0.1)]'
-                      : 'bg-white/5 border-white/10 hover:bg-white/10 hover:border-white/20'
-                      }`}
-                  >
-                    <span className={`text-xs font-bold uppercase tracking-[0.2em] transition-colors ${subscription === 'monthly' ? 'text-gold' : 'text-white/50'
-                      }`}>
-                      Oylik
-                    </span>
-                    <div className="flex flex-col items-center">
-                      <span className={`font-display font-black text-2xl transition-colors ${subscription === 'monthly' ? 'text-white' : 'text-white/80'
-                        }`}>
-                        {(promoStatus === 'success' ? PRICES.monthly * 0.8 : PRICES.monthly).toLocaleString().replace(/,/g, " ")}
-                        <span className="text-xs ml-1 font-sans font-normal text-white/40">so'm</span>
-                      </span>
-                    </div>
-                  </button>
-
-                  <button
-                    onClick={() => setSubscription('yearly')}
-                    className={`relative p-4 rounded-2xl border transition-all duration-300 flex flex-col items-center justify-center gap-1 group ${subscription === 'yearly'
-                      ? 'bg-white/10 border-gold/50 shadow-[0_0_20px_rgba(255,184,0,0.1)]'
-                      : 'bg-white/5 border-white/10 hover:bg-white/10 hover:border-white/20'
-                      }`}
-                  >
-                    <span className={`text-xs font-bold uppercase tracking-[0.2em] transition-colors ${subscription === 'yearly' ? 'text-gold' : 'text-white/50'
-                      }`}>
-                      Yillik
-                    </span>
-                    <div className="flex flex-col items-center">
-                      <span className={`font-display font-black text-2xl transition-colors ${subscription === 'yearly' ? 'text-white' : 'text-white/80'
-                        }`}>
-                        {(promoStatus === 'success' ? PRICES.yearly * 0.8 : PRICES.yearly).toLocaleString().replace(/,/g, " ")}
-                        <span className="text-xs ml-1 font-sans font-normal text-white/40">so'm</span>
-                      </span>
-                    </div>
-                  </button>
-                </div>
-
-                {/* Primary Button - Only visible when typing and not verified */}
-                {promoCode.length > 0 && promoStatus !== 'success' && (
-                  <button
-                    onClick={handleApplyPromo}
-                    className="w-full bg-white/5 hover:bg-white/10 border border-white/10 transition-all duration-300 py-3 rounded-2xl text-white font-bold text-xs uppercase tracking-[0.3em] backdrop-blur-sm animate-in fade-in slide-in-from-top-2"
-                  >
-                    TASDIQLANG
-                  </button>
-                )}
-
-                {/* Price Summary */}
-                <div className="flex justify-between items-end px-4 py-6 rounded-2xl bg-white/[0.02] border border-white/5">
-                  <div className="flex flex-col">
-                    <span className="text-white/30 text-[10px] font-bold uppercase tracking-widest mb-1">To'lov miqdori</span>
-                    <span className="text-white/60 font-medium">Jami:</span>
+              <div className="flex flex-col">
+                <label className="text-[11px] text-slate-400 font-bold uppercase tracking-[0.1em] mb-2 pl-1">TELEFON RAQAM</label>
+                <div className="relative">
+                  <div className="absolute inset-y-0 left-4 flex items-center pointer-events-none">
+                    <Phone className="h-5 w-5 text-slate-500" />
                   </div>
-                  <div className="text-right">
-                    {promoStatus === 'success' && (
-                      <span className="text-sm text-white/30 line-through block mb-1">
-                        {currentPrice.toLocaleString().replace(/,/g, " ")} so'm
-                      </span>
-                    )}
-                    <span className="text-4xl font-black text-white font-display uppercase">
-                      {finalPrice.toLocaleString().replace(/,/g, " ")} <span className="text-lg text-gold ml-1">so'm</span>
-                    </span>
-                  </div>
+                  <input
+                    type="text"
+                    value={phone}
+                    onChange={handlePhoneChange}
+                    placeholder="+998"
+                    className="w-full bg-[#101724] border border-slate-700/80 rounded-2xl py-3.5 pl-12 pr-4 text-white focus:outline-none focus:border-blue-500/60 transition-colors text-[15px] sm:text-base shadow-inner shadow-black/20"
+                  />
                 </div>
-
-                {/* Secondary Button - Solid Gold */}
-                <button className="w-full bg-gradient-to-r from-[#FFB800] to-[#FF9500] hover:scale-[1.02] active:scale-[0.98] transition-all duration-300 py-6 rounded-2xl text-primary font-black text-xl uppercase tracking-[0.1em] shadow-[0_20px_40px_rgba(255,184,0,0.2)]">
-                  TO'LOV QILISH
-                </button>
               </div>
             </div>
+
+            <div className="border-t border-slate-700/50 my-6"></div>
+
+            {/* Total Row */}
+            <div className="flex items-center justify-between mb-6">
+              <span className="text-slate-400 text-sm sm:text-base">Jami to'lov:</span>
+              <span className="text-2xl sm:text-3xl font-black text-white">{finalPrice.toLocaleString('en-US')} so'm</span>
+            </div>
+
+            {/* Pay Button */}
+            <button
+              onClick={handlePayment}
+              disabled={isPaymentLoading}
+              className={`w-full bg-[#2a7af5] hover:bg-blue-500 py-3.5 sm:py-4 rounded-[1.25rem] text-white font-bold text-base sm:text-lg uppercase tracking-wide transition-all shadow-[0_4px_25px_rgba(59,130,246,0.3)] hover:shadow-[0_4px_30px_rgba(59,130,246,0.4)] hover:scale-[1.01] active:scale-[0.99] ${isPaymentLoading ? 'opacity-70 cursor-not-allowed' : ''}`}
+            >
+              {isPaymentLoading ? 'KUTILMOQDA...' : "TO'LOV QILISH"}
+            </button>
+
+            {/* Secure Footer */}
+            <div className="mt-5 flex items-center justify-center gap-2 text-slate-500 text-[11px] sm:text-xs font-medium bg-black/10 rounded-full py-1.5 w-max mx-auto px-4 border border-white/5">
+              <Lock className="w-3.5 h-3.5" />
+              <span>Xavfsiz to'lov | Turon Bank</span>
+            </div>
+
           </div>
         </div>
       </main>
-
-
-      {/* Footer */}
-      <footer className="w-full py-8 text-center border-t border-white/5">
-        <p className="text-white/30 text-xs font-bold tracking-[0.2em] font-display">© 2026 USTOZ AI MEDIA CUP</p>
-      </footer>
     </div>
   );
 }
-
