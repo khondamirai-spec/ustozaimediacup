@@ -1,6 +1,6 @@
 "use client";
 
-import { Star } from "lucide-react";
+import { Star, MessageSquare } from "lucide-react";
 import Image from "next/image";
 
 const REVIEWS = [
@@ -56,10 +56,13 @@ const REVIEWS = [
 
 export function Reviews() {
   return (
-    <div className="w-full mt-8 sm:mt-12 border-t border-slate-800/50 pt-6 sm:pt-10 overflow-hidden flex flex-col items-center">
-      <div className="text-center mb-6 px-4">
-        <h2 className="text-xl sm:text-2xl font-black text-white font-heading">
-          Ishtirokchilarimizning Fikrlari
+    <div className="w-full mt-16 sm:mt-24 pt-12 sm:pt-20 overflow-hidden">
+      <div className="flex items-center gap-4 sm:gap-5 mb-12 px-4 sm:px-0">
+        <div className="w-12 h-12 sm:w-16 sm:h-16 rounded-xl sm:rounded-2xl bg-gradient-to-br from-blue-500/20 to-indigo-500/20 flex items-center justify-center border border-blue-500/30 shadow-[0_0_20px_rgba(59,130,246,0.2)] shrink-0">
+          <MessageSquare className="w-6 h-6 sm:w-8 sm:h-8 text-blue-400" />
+        </div>
+        <h2 className="text-xl sm:text-3xl lg:text-4xl font-black text-white font-heading tracking-tight">
+          Ustoz AI Pro haqida
         </h2>
       </div>
 
