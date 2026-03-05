@@ -1,7 +1,6 @@
 "use client";
 
 import { Star, MessageSquare } from "lucide-react";
-import Image from "next/image";
 
 const REVIEWS = [
   {
@@ -10,31 +9,27 @@ const REVIEWS = [
     role: "Matematika Kursi",
     content: "Kattakon rahmat ustoz AI jamoasiga sovğalarim keldi menga judayam yoqdi ajoyib super darslar uchun ☺️☺️",
     rating: 5,
-    image: "/reviews/photo_2025-05-20_19-29-57.jpg"
   },
   {
     id: 2,
-    name: "@Malika_2004",
+    name: "Malika_2004",
     role: "Video Montaj",
     content: "Man har doim Video montajiga qiziqib yurardim, kotta rahmat, 6 soatda montaj qilishni o‘rganish bu prosta super!!!! ❤️❤️",
     rating: 5,
-    image: "/reviews/photo_2025-06-27_09-04-03.jpg"
   },
   {
     id: 3,
     name: "Javohir B.",
-    role: "Video Mantaj",
+    role: "Video Montaj",
     content: "Menga eng yoqqan dars videomantaj bo'ldi, videomantajni umuman bilmas edim, 0 dan o'rgandim va hozirda premiere pro orqali videolar mantaj qilyabman. Juda darslar sifatli bo'ldi.",
     rating: 5,
-    image: "/reviews/photo_2025-06-29_14-39-46.jpg"
   },
   {
     id: 4,
     name: "Aziza K.",
-    role: "O'quvchi",
+    role: "Uzum Market Kursi",
     content: "SIZga katta rahmat, мен 52 ёшдаман ва бу маълумотингиз менga жуда ёқди (анча маълумот олдим).",
     rating: 5,
-    image: "/reviews/photo_2025-06-29_16-48-39.jpg"
   },
   {
     id: 5,
@@ -42,19 +37,21 @@ const REVIEWS = [
     role: "Ish Topish Kursi",
     content: "Мен Тожикистондан дарсингиз фойдали булибдими ёки буптими кайси бири тугри узбек тилини яхши биламан деб юрардим кантентни куриб изох ёзилгахам журъатим етмай колди",
     rating: 5,
-    image: "/reviews/photo_2025-05-20_19-29-57.jpg"
   },
   {
     id: 6,
     name: "Doston V.",
-    role: "Media Mutaxassis",
+    role: "Suniy Intelektlar",
     content: "Qoyil qolmay iloji yo'q. Judayam mashaqqatli mehnatingiz uchun katta rahmat. Imkonsizlar uchun imkoniyat.",
     rating: 5,
-    image: "/reviews/photo_2025-06-27_09-04-03.jpg"
   },
 ];
 
 export function Reviews() {
+  const getInitial = (name: string) => {
+    return name.replace(/^@/, "").charAt(0).toUpperCase();
+  };
+
   return (
     <div className="w-full mt-16 sm:mt-24 pt-12 sm:pt-20 overflow-hidden">
       <div className="flex items-center gap-4 sm:gap-5 mb-12 px-4 sm:px-0">
@@ -86,14 +83,11 @@ export function Reviews() {
                 </div>
                 <p className="text-slate-300 text-[13px] leading-relaxed italic">"{review.content}"</p>
                 <div className="mt-auto flex items-center gap-2.5 pt-3 border-t border-slate-800/60 transition-colors group-hover:border-slate-700">
-                  <div className="relative w-8 h-8 rounded-full overflow-hidden shrink-0 border border-slate-700/50">
-                    <Image
-                      src={review.image}
-                      alt={review.name}
-                      fill
-                      sizes="32px"
-                      className="object-cover"
-                    />
+                  {/* Initial Avatar */}
+                  <div className="w-8 h-8 rounded-full shrink-0 border border-blue-500/30 bg-gradient-to-br from-blue-600/20 to-sky-600/20 flex items-center justify-center shadow-[0_0_10px_rgba(59,130,246,0.1)] group-hover:border-blue-400/50 transition-colors">
+                    <span className="text-blue-400 font-black text-xs select-none">
+                      {getInitial(review.name)}
+                    </span>
                   </div>
                   <div className="flex flex-col">
                     <span className="text-white font-bold text-[12px] tracking-wide leading-none">{review.name}</span>
@@ -108,3 +102,4 @@ export function Reviews() {
     </div>
   );
 }
+
