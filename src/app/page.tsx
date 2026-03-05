@@ -5,6 +5,7 @@ import {
   Trophy, ArrowDown, Play, FileText, Target, Award, Tag,
   Check, User, Phone, CheckCircle2, Lock, Flame
 } from "lucide-react";
+import { Reviews } from "@/components/Reviews";
 
 const PRICES = {
   monthly: 39000,
@@ -317,6 +318,8 @@ export default function Home() {
           </div>
         </div>
       </main>
+
+      <Reviews />
     </div>
   );
 }
