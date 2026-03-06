@@ -89,8 +89,8 @@ export default function Home() {
       return;
     }
 
-    const rawPhone = phone.replace(/[^\d+]/g, "");
-    if (rawPhone.length < 13) {
+    const rawPhone = phone.replace(/\D/g, "");
+    if (rawPhone.length < 12) {
       alert("Iltimos, telefon raqamingizni to'liq kiriting");
       return;
     }
@@ -98,7 +98,7 @@ export default function Home() {
     setIsPaymentLoading(true);
 
     try {
-      const response = await fetch("https://dev-api.ustozaibot.uz/api/v1/premium/generate-payment-url", {
+      const response = await fetch("https://api.ustozaibot.uz/api/v1/premium/generate-payment-url", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
