@@ -207,7 +207,7 @@ export default function Home() {
 
             {/* The image itself with 'lighten' to drop its dark background and blend into our container */}
             <img
-              src="/цап.png"
+              src="/zap.png"
               alt="Eng Foydali Tanlov"
               className="w-full h-auto object-cover relative z-0 transition-transform duration-700 ease-out group-hover:scale-[1.02] mix-blend-screen opacity-90 hover:opacity-100"
             />
