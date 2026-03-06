@@ -17,7 +17,7 @@ const PRICES = {
 export default function Home() {
   const [phone, setPhone] = useState("+998 ");
   const [fullName, setFullName] = useState("");
-  const [promoCode] = useState("MEDIACUP20");
+  const [promoCode] = useState("mediacup20");
   const [promoStatus] = useState<"success" | "idle" | "error">("success");
   const [subscription, setSubscription] = useState<"monthly" | "yearly">("yearly");
   const [isPaymentLoading, setIsPaymentLoading] = useState(false);
@@ -303,7 +303,7 @@ export default function Home() {
             <div className="inline-flex items-center justify-between border border-[#1e4a2d] bg-[#0c2e17] rounded-full px-3 sm:px-4 py-3 mb-3 w-full sm:w-max sm:min-w-[300px]">
               <div className="flex items-center gap-2 text-white font-mono font-bold tracking-widest uppercase">
                 <Tag className="w-5 h-5 text-green-500 mr-1" />
-                MEDIACUP20
+                mediacup20
               </div>
               <div className="flex items-center gap-1.5 border border-[#16944e]/30 bg-[#0d5930]/80 rounded-full px-3 py-1 text-[10px] text-green-400 font-bold ml-4">
                 <Check className="w-3 h-3" strokeWidth={3} />
