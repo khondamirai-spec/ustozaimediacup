@@ -83,14 +83,14 @@ export function Reviews() {
           <MessageSquare className="w-6 h-6 sm:w-8 sm:h-8 text-blue-400" />
         </div>
         <h2 className="text-xl sm:text-3xl lg:text-4xl font-black text-white font-heading tracking-tight">
-          O'quvchilar natijalari
+          Ustoz AI Pro haqida
         </h2>
       </div>
 
       <div className="relative w-full">
         <div
           ref={scrollRef}
-          className="flex overflow-x-auto gap-4 sm:gap-6 px-4 pb-10 scrollbar-hide select-none cursor-grab"
+          className="flex items-center overflow-x-auto gap-4 sm:gap-6 px-4 pb-10 scrollbar-hide select-none cursor-grab"
           style={{
             scrollbarWidth: 'none',
             msOverflowStyle: 'none',
@@ -100,13 +100,13 @@ export function Reviews() {
           {INFINITE_IMAGES.map((src, index) => (
             <div
               key={index}
-              className="flex-none w-[280px] sm:w-[320px] lg:w-[360px] bg-[#111827] border border-slate-700/60 rounded-3xl p-3 shadow-[0_0_30px_rgba(0,0,0,0.5)] hover:border-blue-500/30 hover:shadow-[0_0_20px_rgba(59,130,246,0.1)] transition-all duration-300"
+              className="flex-none bg-[#111827] border border-slate-700/60 rounded-2xl sm:rounded-3xl p-2 sm:p-3 shadow-[0_0_30px_rgba(0,0,0,0.5)] hover:border-blue-500/30 hover:shadow-[0_0_20px_rgba(59,130,246,0.1)] transition-all duration-300"
             >
-              <div className="relative overflow-hidden rounded-2xl">
+              <div className="relative overflow-hidden rounded-xl sm:rounded-2xl flex items-center justify-center">
                 <img
                   src={src}
                   alt={`Review ${index + 1}`}
-                  className="w-full h-auto object-cover block pointer-events-none"
+                  className="w-auto h-auto max-w-[85vw] sm:max-w-[400px] max-h-[60vh] lg:max-h-[500px] object-contain block pointer-events-none"
                   loading="lazy"
                   draggable={false}
                 />
