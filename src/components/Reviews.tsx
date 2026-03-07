@@ -4,11 +4,13 @@ import { useRef, useEffect } from "react";
 import { MessageSquare } from "lucide-react";
 
 const REVIEW_IMAGES = Array.from({ length: 15 }, (_, i) => `/reviews/${i + 1}.jpg`);
-// Triple the array to ensure smooth infinite scroll in both directions
 const INFINITE_IMAGES = [...REVIEW_IMAGES, ...REVIEW_IMAGES, ...REVIEW_IMAGES];
 
 export function Reviews() {
   const scrollRef = useRef<HTMLDivElement>(null);
+  const isDown = useRef(false);
+  const startX = useRef(0);
+  const scrollLeftStart = useRef(0);
 
   useEffect(() => {
     const container = scrollRef.current;
@@ -18,22 +20,60 @@ export function Reviews() {
     const singleSetWidth = container.scrollWidth / 3;
     container.scrollLeft = singleSetWidth;
 
+    // --- INFINITE LOOP LOGIC ---
     const handleScroll = () => {
       const scrollLeft = container.scrollLeft;
       const singleSetWidth = container.scrollWidth / 3;
-
-      // If we scroll too far left, jump to the same position in the middle set
       if (scrollLeft <= 5) {
         container.scrollLeft = singleSetWidth + scrollLeft;
-      }
-      // If we scroll too far right, jump to the same position in the middle set
-      else if (scrollLeft >= singleSetWidth * 2 - 5) {
+      } else if (scrollLeft >= singleSetWidth * 2 - 5) {
         container.scrollLeft = scrollLeft - singleSetWidth;
       }
     };
+    container.addEventListener("scroll", handleScroll, { passive: true });
 
-    container.addEventListener("scroll", handleScroll);
-    return () => container.removeEventListener("scroll", handleScroll);
+    // --- MOUSE DRAG LOGIC ---
+    const onMouseDown = (e: MouseEvent) => {
+      isDown.current = true;
+      startX.current = e.pageX - container.offsetLeft;
+      scrollLeftStart.current = container.scrollLeft;
+      container.style.cursor = "grabbing";
+      container.style.userSelect = "none";
+    };
+
+    const onMouseLeave = () => {
+      if (!isDown.current) return;
+      isDown.current = false;
+      container.style.cursor = "grab";
+      container.style.removeProperty("user-select");
+    };
+
+    const onMouseUp = () => {
+      isDown.current = false;
+      container.style.cursor = "grab";
+      container.style.removeProperty("user-select");
+    };
+
+    const onMouseMove = (e: MouseEvent) => {
+      if (!isDown.current) return;
+      e.preventDefault();
+      const x = e.pageX - container.offsetLeft;
+      const walk = (x - startX.current) * 1.5; // multiply for faster feel
+      container.scrollLeft = scrollLeftStart.current - walk;
+    };
+
+    container.addEventListener("mousedown", onMouseDown);
+    container.addEventListener("mouseleave", onMouseLeave);
+    container.addEventListener("mouseup", onMouseUp);
+    container.addEventListener("mousemove", onMouseMove);
+
+    return () => {
+      container.removeEventListener("scroll", handleScroll);
+      container.removeEventListener("mousedown", onMouseDown);
+      container.removeEventListener("mouseleave", onMouseLeave);
+      container.removeEventListener("mouseup", onMouseUp);
+      container.removeEventListener("mousemove", onMouseMove);
+    };
   }, []);
 
   return (
@@ -48,35 +88,33 @@ export function Reviews() {
       </div>
 
       <div className="relative w-full">
-        {/* Horizontal Scrolling Gallery - "snap-none" for free feel */}
         <div
           ref={scrollRef}
-          className="flex overflow-x-auto gap-4 sm:gap-6 px-4 pb-10 scrollbar-hide select-none active:cursor-grabbing cursor-grab overscroll-auto"
+          className="flex overflow-x-auto gap-4 sm:gap-6 px-4 pb-10 scrollbar-hide select-none cursor-grab"
           style={{
             scrollbarWidth: 'none',
             msOverflowStyle: 'none',
-            WebkitOverflowScrolling: 'touch'
+            WebkitOverflowScrolling: 'touch',
           }}
         >
           {INFINITE_IMAGES.map((src, index) => (
             <div
               key={index}
-              className="flex-none w-[280px] sm:w-[320px] lg:w-[380px]"
+              className="flex-none w-[280px] sm:w-[320px] lg:w-[360px] bg-[#111827] border border-slate-700/60 rounded-3xl p-3 shadow-[0_0_30px_rgba(0,0,0,0.5)] hover:border-blue-500/30 hover:shadow-[0_0_20px_rgba(59,130,246,0.1)] transition-all duration-300"
             >
-              <div className="relative group overflow-hidden rounded-2xl border border-white/10 shadow-2xl transition-transform duration-500 hover:scale-[1.02] pointer-events-none">
+              <div className="relative overflow-hidden rounded-2xl">
                 <img
                   src={src}
                   alt={`Review ${index + 1}`}
-                  className="w-full h-auto object-cover block"
+                  className="w-full h-auto object-cover block pointer-events-none"
                   loading="lazy"
+                  draggable={false}
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
               </div>
             </div>
           ))}
         </div>
 
-        {/* Visual cues for interaction */}
         <div className="flex justify-center gap-1.5 mt-2 opacity-50">
           <div className="h-0.5 w-24 bg-blue-500/20 rounded-full" />
         </div>
@@ -84,5 +122,3 @@ export function Reviews() {
     </div>
   );
 }
-
-

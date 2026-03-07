@@ -142,13 +142,13 @@ export default function Home() {
       <div className="absolute top-[10%] left-[-10%] w-[500px] h-[500px] bg-blue-500/10 blur-[150px] rounded-full pointer-events-none z-0"></div>
       <div className="absolute right-[-10%] top-[40%] w-[400px] h-[400px] bg-sky-500/10 blur-[150px] rounded-full pointer-events-none z-0"></div>
 
-      <main className="flex-1 w-full max-w-[1240px] mx-auto px-4 sm:px-6 py-6 sm:py-12 z-10 flex flex-col lg:flex-row gap-8 lg:gap-16 items-start justify-between">
+      <main className="flex-1 w-full max-w-[600px] mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-10 z-10 flex flex-col gap-6 lg:gap-10">
 
-        {/* LEFT COLUMN: HERO & FEATURES */}
-        <div className="w-full lg:w-1/2 flex flex-col gap-6 lg:gap-8 pt-4">
+        {/* HERO & FEATURES */}
+        <div className="w-full flex flex-col gap-6 lg:gap-8 pt-2">
 
           {/* Header Texts */}
-          <div className="flex flex-col items-center lg:items-start text-center lg:text-left">
+          <div className="flex flex-col items-center text-center">
             <div className="inline-flex items-center gap-2.5 border border-blue-400/30 bg-blue-400/10 backdrop-blur-md px-5 py-2 rounded-full mb-8 mt-2 shadow-[0_0_20px_rgba(56,189,248,0.1)] group">
               <Trophy className="w-4 h-4 text-blue-400 group-hover:rotate-12 transition-transform duration-300" />
               <span className="text-blue-400 text-[10px] sm:text-xs font-black uppercase tracking-[0.2em] leading-none">
@@ -156,36 +156,28 @@ export default function Home() {
               </span>
             </div>
 
-            <h1 className="text-4xl sm:text-6xl lg:text-7xl font-black mb-6 sm:mb-8 tracking-tight leading-[1.05] text-white font-heading">
+            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black mb-4 sm:mb-6 tracking-tight leading-[1.05] text-white font-heading">
               Ustoz AI <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-sky-600">Pro</span>
             </h1>
 
-            <div className="relative group max-w-2xl">
-              <div className="absolute -left-4 top-0 bottom-0 w-1 bg-gradient-to-b from-blue-500 to-transparent rounded-full opacity-50"></div>
-              <p className="text-sm sm:text-base lg:text-lg text-slate-300/90 mb-10 pl-6 leading-relaxed font-medium">
+            <div className="relative group max-w-xl">
+              <p className="text-sm sm:text-base lg:text-base text-slate-300/90 mb-8 leading-relaxed font-medium">
                 Zamonaviy kasblarni o‘rganing, <span className="text-white font-bold underline decoration-blue-500/50 decoration-2 underline-offset-4">sertifikat oling</span> va <span className="text-white font-bold">TOP kompaniyalarda</span> amaliyot o‘ting.<br />
                 <span className="inline-flex items-center gap-1 text-blue-400 font-bold mt-1">Yuqori daromad va sovrinlarni qo‘lga kiriting <Sparkles className="w-4 h-4" /></span>
               </p>
             </div>
 
-
             <button
               onClick={() => document.getElementById('payment-form')?.scrollIntoView({ behavior: 'smooth' })}
-              className="lg:hidden bg-blue-500 hover:bg-blue-600 transition-colors text-white rounded-full px-6 py-4 font-black text-lg flex items-center justify-center gap-2 mb-4 w-full sm:w-auto shadow-lg shadow-blue-500/20"
+              className="bg-blue-500 hover:bg-blue-600 transition-all text-white rounded-full px-8 py-4 font-black text-base lg:text-lg flex items-center justify-center gap-2 mb-4 w-full sm:w-auto shadow-lg shadow-blue-500/20 hover:scale-105 active:scale-95"
             >
               Hoziroq boshlash <ArrowDown className="w-5 h-5" />
-            </button>
-            <button
-              onClick={() => document.getElementById('payment-form')?.scrollIntoView({ behavior: 'smooth' })}
-              className="hidden lg:flex bg-blue-500 hover:bg-blue-600 transition-colors text-white rounded-full px-10 py-4 font-black text-xl items-center gap-3 shadow-lg shadow-blue-500/20 hover:scale-105 active:scale-95 ease-in-out"
-            >
-              Hoziroq boshlash <ArrowDown className="w-5 h-5 ml-1" />
             </button>
           </div>
 
           {/* Video Box */}
           <div
-            className="relative w-full aspect-[9/16] max-w-[400px] mx-auto bg-[#0f1524]/80 backdrop-blur-md rounded-2xl border border-slate-700/60 flex flex-col items-center justify-center group overflow-hidden cursor-pointer shadow-xl transition-all duration-300 hover:border-slate-600 mt-2"
+            className="relative w-full aspect-[9/16] max-w-[340px] lg:max-w-[380px] mx-auto bg-[#0f1524]/80 backdrop-blur-md rounded-[2.5rem] border border-slate-700/60 flex flex-col items-center justify-center group overflow-hidden cursor-pointer shadow-2xl transition-all duration-300 hover:border-slate-600"
             onClick={() => {
               const video = document.getElementById('hero-video') as HTMLVideoElement;
               if (video) {
@@ -214,11 +206,11 @@ export default function Home() {
               <>
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent z-10" />
 
-                <div className="z-20 w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-blue-600/30 flex items-center justify-center backdrop-blur-sm border border-blue-500/50 group-hover:bg-blue-600/50 group-hover:scale-110 transition-all shadow-[0_0_20px_rgba(59,130,246,0.3)]">
-                  <div className="w-0 h-0 border-t-[7px] border-t-transparent border-l-[12px] border-l-white border-b-[7px] border-b-transparent ml-1"></div>
+                <div className="z-20 w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-blue-600/30 flex items-center justify-center backdrop-blur-sm border border-blue-500/50 group-hover:bg-blue-600/50 group-hover:scale-110 transition-all shadow-[0_0_30px_rgba(59,130,246,0.3)]">
+                  <div className="w-0 h-0 border-t-[8px] border-t-transparent border-l-[14px] border-l-white border-b-[8px] border-b-transparent ml-1.5"></div>
                 </div>
 
-                <span className="z-20 mt-4 text-slate-300 text-xs sm:text-sm font-bold tracking-[0.2em] uppercase">
+                <span className="z-20 mt-5 text-slate-300 text-xs sm:text-sm font-bold tracking-[0.25em] uppercase">
                   VIDEONI KO'RISH
                 </span>
               </>
@@ -230,31 +222,25 @@ export default function Home() {
           <WeeklyPrizes />
 
 
-          {/* Added Promotional Image Block (Screenshot_7) */}
-          <div className="mt-8 sm:mt-12 w-full relative rounded-3xl sm:rounded-[2.5rem] overflow-hidden shadow-[0_0_60px_rgba(0,0,0,0.6)] group bg-[#020817] border border-slate-800/60">
-            {/* Subtle Inner Glow to blend */}
+          {/* Promotional Image Block */}
+          <div className="w-full relative rounded-[3rem] overflow-hidden shadow-[0_0_60px_rgba(0,0,0,0.6)] group bg-[#020817] border border-slate-800/60">
             <div className="absolute inset-0 bg-gradient-to-br from-blue-500/10 via-transparent to-transparent opacity-50 mix-blend-overlay z-10 pointer-events-none"></div>
-
-            {/* The image itself with 'lighten' to drop its dark background and blend into our container */}
             <img
               src="/zap.png"
               alt="Eng Foydali Tanlov"
-              className="w-full h-auto object-cover relative z-0 transition-transform duration-700 ease-out group-hover:scale-[1.02] mix-blend-screen opacity-90 hover:opacity-100"
+              className="w-full h-auto object-cover relative z-0 transition-transform duration-1000 ease-out group-hover:scale-[1.05] mix-blend-screen opacity-90 hover:opacity-100"
             />
-
-            {/* Inset Shadow to erase hard image borders and feather the edges */}
-            <div className="absolute inset-0 rounded-3xl sm:rounded-[2.5rem] shadow-[inset_0_0_40px_3px_#020817] z-10 pointer-events-none"></div>
+            <div className="absolute inset-0 rounded-[3rem] shadow-[inset_0_0_60px_5px_#020817] z-10 pointer-events-none"></div>
           </div>
 
           {/* How It Works Section */}
-          <div className="mt-8 sm:mt-12 w-full flex flex-col gap-6 lg:gap-8">
-            <h2 className="text-xl sm:text-2xl lg:text-3xl font-black text-white leading-tight font-heading flex items-center gap-3">
-              <span className="p-2 bg-blue-500/20 rounded-lg border border-blue-500/30 shadow-[0_0_15px_rgba(59,130,246,0.3)]"><Sparkles className="w-6 h-6 text-blue-400 animate-pulse" /></span> Qanday boshlash mumkin?
+          <div className="w-full flex flex-col gap-10">
+            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-black text-white leading-tight font-heading flex items-center gap-4">
+              <span className="p-3 bg-blue-500/20 rounded-2xl border border-blue-500/30 shadow-[0_0_20px_rgba(59,130,246,0.3)]"><Sparkles className="w-7 h-7 text-blue-400 animate-pulse" /></span> Qanday boshlash mumkin?
             </h2>
 
-            <div className="flex flex-col gap-4 relative">
-              {/* Vertical line connecting steps */}
-              <div className="absolute left-[35px] sm:left-[47px] top-8 bottom-8 w-[2px] bg-gradient-to-b from-blue-500/80 via-blue-500/40 to-transparent shadow-[0_0_10px_rgba(59,130,246,0.3)] z-0"></div>
+            <div className="flex flex-col gap-6 relative">
+              <div className="absolute left-[35px] sm:left-[51px] top-10 bottom-10 w-[2px] bg-gradient-to-b from-blue-500/80 via-blue-500/40 to-transparent shadow-[0_0_10px_rgba(59,130,246,0.3)] z-0"></div>
 
               {[
                 {
@@ -274,21 +260,20 @@ export default function Home() {
                   desc: "Kurslarni tugating, coinlar to‘plang va Media Cup hamda Ustoz AI Market orqali <b class='text-white font-black'>uy, avtomobil, sayohat va 100+ qimmatbaho sovrinlarni yuting.</b>"
                 }
               ].map((step, idx) => (
-                <div key={idx} className="relative flex items-start gap-4 sm:gap-6 bg-[#162132]/90 border border-blue-500/20 p-5 sm:p-7 rounded-3xl z-10 shadow-xl overflow-hidden group/card">
-                  {/* Subtle background glow effect */}
+                <div key={idx} className="relative flex items-start gap-5 sm:gap-8 bg-[#162132]/90 border border-blue-500/20 p-6 sm:p-10 rounded-[2.5rem] z-10 shadow-2xl overflow-hidden group/card hover:border-blue-500/40 transition-all duration-300">
                   <div className="absolute inset-0 bg-gradient-to-r from-blue-500/5 via-transparent to-transparent pointer-events-none"></div>
 
-                  <div className="relative w-12 h-12 rounded-2xl bg-[#0a1120] border-2 border-blue-500/40 flex items-center justify-center shrink-0 text-blue-400 font-black text-xl shadow-[0_0_15px_rgba(59,130,246,0.2)] z-10 group-hover/card:border-blue-400 transition-colors">
+                  <div className="relative w-14 h-14 sm:w-16 sm:h-16 rounded-[1.25rem] bg-[#0a1120] border-2 border-blue-500/40 flex items-center justify-center shrink-0 text-blue-400 font-black text-2xl shadow-[0_0_20px_rgba(59,130,246,0.2)] z-10 group-hover/card:border-blue-400 group-hover/card:scale-110 transition-all">
                     <span className="relative z-10">{idx + 1}</span>
-                    <div className="absolute inset-0 rounded-2xl bg-blue-500/10 blur-sm pointer-events-none"></div>
+                    <div className="absolute inset-0 rounded-[1.25rem] bg-blue-500/10 blur-sm pointer-events-none"></div>
                   </div>
 
-                  <div className="flex flex-col gap-2 z-10 text-left">
-                    <h4 className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-sky-500 font-black text-lg sm:text-xl leading-snug">
+                  <div className="flex flex-col gap-3 z-10 text-left">
+                    <h4 className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-sky-500 font-black text-xl sm:text-2xl leading-none">
                       {step.title}
                     </h4>
                     <p
-                      className="text-white/70 text-sm sm:text-base leading-relaxed font-medium"
+                      className="text-white/70 text-base sm:text-lg leading-relaxed font-medium"
                       dangerouslySetInnerHTML={{ __html: step.desc }}
                     />
                   </div>
@@ -302,10 +287,10 @@ export default function Home() {
 
         </div>
 
-        {/* RIGHT COLUMN: PAYMENT FORM */}
-        <div className="w-full lg:w-1/2 flex flex-col items-end gap-6 mt-4 lg:mt-0" id="payment-form">
+        {/* PAYMENT FORM */}
+        <div className="w-full flex flex-col items-center gap-6" id="payment-form">
           {/* Countdown Timer Block */}
-          <div className="w-full max-w-[480px] p-5 sm:p-7 rounded-[2.5rem] bg-[#162132]/60 border border-slate-700/50 backdrop-blur-sm flex flex-col items-center shadow-2xl relative overflow-hidden group">
+          <div className="w-full max-w-[600px] p-5 sm:p-7 rounded-[2.5rem] bg-[#162132]/60 border border-slate-700/50 backdrop-blur-sm flex flex-col items-center shadow-2xl relative overflow-hidden group">
             <div className="absolute inset-0 bg-gradient-to-b from-blue-500/5 via-transparent to-transparent pointer-events-none"></div>
 
             <div className="mb-5 sm:mb-6 flex flex-col items-center">
@@ -332,7 +317,7 @@ export default function Home() {
               </div>
             </div>
           </div>
-          <div className="w-full max-w-[480px] bg-[#162132] rounded-3xl p-6 sm:p-8 border border-slate-700/70 shadow-2xl relative lg:ml-auto">
+          <div className="w-full max-w-[600px] bg-[#162132] rounded-3xl p-6 sm:p-8 lg:p-10 border border-slate-700/70 shadow-2xl relative">
 
             <h3 className="text-[11px] text-slate-400 font-bold uppercase tracking-[0.15em] mb-4 text-center sm:text-left">PROMOKOD</h3>
 
