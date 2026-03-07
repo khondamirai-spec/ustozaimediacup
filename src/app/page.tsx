@@ -203,6 +203,7 @@ export default function Home() {
               id="hero-video"
               className="absolute inset-0 w-full h-full object-cover"
               src="https://pub-53b0592c8c664875bac6456d9e6568fc.r2.dev/IMG_1243%20(1).mp4"
+              poster="/video_thumbnail.png"
               playsInline
               onPlay={() => setIsPlaying(true)}
               onPause={() => setIsPlaying(false)}
