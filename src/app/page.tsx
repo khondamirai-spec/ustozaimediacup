@@ -304,23 +304,30 @@ export default function Home() {
 
         {/* RIGHT COLUMN: PAYMENT FORM */}
         <div className="w-full lg:w-1/2 flex flex-col items-end gap-6 mt-4 lg:mt-0" id="payment-form">
-          {/* Countdown Timer */}
-          <div className="w-full max-w-[480px] p-5 sm:p-6 rounded-3xl bg-[#162132]/60 border border-slate-700/50 backdrop-blur-sm flex justify-center shadow-xl relative overflow-hidden group">
-            <div className="absolute inset-0 bg-gradient-to-r from-blue-500/5 via-blue-500/0 to-blue-500/5 pointer-events-none"></div>
+          {/* Countdown Timer Block */}
+          <div className="w-full max-w-[480px] p-5 sm:p-7 rounded-[2.5rem] bg-[#162132]/60 border border-slate-700/50 backdrop-blur-sm flex flex-col items-center shadow-2xl relative overflow-hidden group">
+            <div className="absolute inset-0 bg-gradient-to-b from-blue-500/5 via-transparent to-transparent pointer-events-none"></div>
+
+            <div className="mb-5 sm:mb-6 flex flex-col items-center">
+              <span className="text-blue-400 font-black uppercase tracking-[0.25em] text-[10px] sm:text-[11px] drop-shadow-[0_0_10px_rgba(56,189,248,0.3)]">
+                Maxsus taklif tugash vaqti
+              </span>
+              <div className="h-0.5 w-8 bg-blue-500/30 rounded-full mt-1.5" />
+            </div>
 
             <div className="flex items-center gap-3 sm:gap-4 z-10 shrink-0">
-              <div className="flex flex-col items-center bg-[#0a1120] p-3 sm:p-4 rounded-2xl border border-slate-700/70 min-w-[80px] sm:min-w-[90px] shadow-inner group-hover:border-blue-500/30 transition-colors">
+              <div className="flex flex-col items-center bg-[#0a1120] p-3 sm:p-4 rounded-2xl border border-slate-700/70 min-w-[80px] sm:min-w-[90px] shadow-[inset_0_2px_10px_rgba(0,0,0,0.5)] group-hover:border-blue-500/30 transition-colors">
                 <span className="text-3xl sm:text-4xl font-black text-white tabular-nums tracking-tight">{String(timeLeft.days).padStart(2, '0')}</span>
                 <span className="text-[10px] sm:text-xs text-slate-500 font-bold uppercase tracking-widest mt-1.5">kun</span>
               </div>
-              <span className="text-white font-black text-2xl sm:text-3xl">:</span>
-              <div className="flex flex-col items-center bg-[#0a1120] p-3 sm:p-4 rounded-2xl border border-slate-700/70 min-w-[80px] sm:min-w-[90px] shadow-inner group-hover:border-blue-500/30 transition-colors">
+              <span className="text-white/40 font-black text-2xl sm:text-3xl animate-pulse">:</span>
+              <div className="flex flex-col items-center bg-[#0a1120] p-3 sm:p-4 rounded-2xl border border-slate-700/70 min-w-[80px] sm:min-w-[90px] shadow-[inset_0_2px_10px_rgba(0,0,0,0.5)] group-hover:border-blue-500/30 transition-colors">
                 <span className="text-3xl sm:text-4xl font-black text-white tabular-nums tracking-tight">{String(timeLeft.hours).padStart(2, '0')}</span>
                 <span className="text-[10px] sm:text-xs text-slate-500 font-bold uppercase tracking-widest mt-1.5">soat</span>
               </div>
-              <span className="text-white font-black text-2xl sm:text-3xl">:</span>
-              <div className="flex flex-col items-center bg-[#0a1120] p-3 sm:p-4 rounded-2xl border border-slate-700/70 min-w-[80px] sm:min-w-[90px] shadow-inner group-hover:border-blue-500/30 transition-colors">
-                <span className="text-3xl sm:text-4xl font-black text-blue-400 tabular-nums tracking-tight drop-shadow-[0_0_8px_rgba(59,130,246,0.6)]">{String(timeLeft.minutes).padStart(2, '0')}</span>
+              <span className="text-white/40 font-black text-2xl sm:text-3xl animate-pulse">:</span>
+              <div className="flex flex-col items-center bg-[#0a1120] p-3 sm:p-4 rounded-2xl border border-slate-700/70 min-w-[80px] sm:min-w-[90px] shadow-[inset_0_2px_10px_rgba(0,0,0,0.5)] group-hover:border-blue-500/30 transition-colors">
+                <span className="text-3xl sm:text-4xl font-black text-blue-400 tabular-nums tracking-tight drop-shadow-[0_0_12px_rgba(59,130,246,0.5)]">{String(timeLeft.minutes).padStart(2, '0')}</span>
                 <span className="text-[10px] sm:text-xs text-slate-500 font-bold uppercase tracking-widest mt-1.5">daqiqa</span>
               </div>
             </div>

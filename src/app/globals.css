@@ -49,6 +49,15 @@ body {
   .animate-scroll {
     animation: scroll 30s linear infinite;
   }
+
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
 }
 
 @keyframes scroll {

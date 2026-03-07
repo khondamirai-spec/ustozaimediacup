@@ -1,105 +1,88 @@
 "use client";
 
-import { Star, MessageSquare } from "lucide-react";
+import { useRef, useEffect } from "react";
+import { MessageSquare } from "lucide-react";
 
-const REVIEWS = [
-  {
-    id: 1,
-    name: "@Sardor_mj",
-    role: "Matematika Kursi",
-    content: "Kattakon rahmat ustoz AI jamoasiga sovğalarim keldi menga judayam yoqdi ajoyib super darslar uchun ☺️☺️",
-    rating: 5,
-  },
-  {
-    id: 2,
-    name: "Malika_2004",
-    role: "Video Montaj",
-    content: "Man har doim Video montajiga qiziqib yurardim, kotta rahmat, 6 soatda montaj qilishni o‘rganish bu prosta super!!!! ❤️❤️",
-    rating: 5,
-  },
-  {
-    id: 3,
-    name: "Javohir B.",
-    role: "Video Montaj",
-    content: "Menga eng yoqqan dars videomantaj bo'ldi, videomantajni umuman bilmas edim, 0 dan o'rgandim va hozirda premiere pro orqali videolar mantaj qilyabman. Juda darslar sifatli bo'ldi.",
-    rating: 5,
-  },
-  {
-    id: 4,
-    name: "Aziza K.",
-    role: "Uzum Market Kursi",
-    content: "SIZga katta rahmat, мен 52 ёшдаман ва бу маълумотингиз менga жуда ёқди (анча маълумот олдим).",
-    rating: 5,
-  },
-  {
-    id: 5,
-    name: "Akobir_tursunov",
-    role: "Ish Topish Kursi",
-    content: "Мен Тожикистондан дарсингиз фойдали булибдими ёки буптими кайси бири тугри узбек тилини яхши биламан деб юрардим кантентни куриб изох ёзилгахам журъатим етмай колди",
-    rating: 5,
-  },
-  {
-    id: 6,
-    name: "Doston V.",
-    role: "Suniy Intelektlar",
-    content: "Qoyil qolmay iloji yo'q. Judayam mashaqqatli mehnatingiz uchun katta rahmat. Imkonsizlar uchun imkoniyat.",
-    rating: 5,
-  },
-];
+const REVIEW_IMAGES = Array.from({ length: 15 }, (_, i) => `/reviews/${i + 1}.jpg`);
+// Triple the array to ensure smooth infinite scroll in both directions
+const INFINITE_IMAGES = [...REVIEW_IMAGES, ...REVIEW_IMAGES, ...REVIEW_IMAGES];
 
 export function Reviews() {
-  const getInitial = (name: string) => {
-    return name.replace(/^@/, "").charAt(0).toUpperCase();
-  };
+  const scrollRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const container = scrollRef.current;
+    if (!container) return;
+
+    // Set initial scroll position to the middle set of images
+    const singleSetWidth = container.scrollWidth / 3;
+    container.scrollLeft = singleSetWidth;
+
+    const handleScroll = () => {
+      const scrollLeft = container.scrollLeft;
+      const singleSetWidth = container.scrollWidth / 3;
+
+      // If we scroll too far left, jump to the same position in the middle set
+      if (scrollLeft <= 5) {
+        container.scrollLeft = singleSetWidth + scrollLeft;
+      }
+      // If we scroll too far right, jump to the same position in the middle set
+      else if (scrollLeft >= singleSetWidth * 2 - 5) {
+        container.scrollLeft = scrollLeft - singleSetWidth;
+      }
+    };
+
+    container.addEventListener("scroll", handleScroll);
+    return () => container.removeEventListener("scroll", handleScroll);
+  }, []);
 
   return (
     <div className="w-full mt-16 sm:mt-24 pt-12 sm:pt-20 overflow-hidden">
-      <div className="flex items-center gap-4 sm:gap-5 mb-12 px-4 sm:px-0">
+      <div className="flex items-center gap-4 sm:gap-5 mb-12 px-4 sm:px-0 max-w-7xl mx-auto">
         <div className="w-12 h-12 sm:w-16 sm:h-16 rounded-xl sm:rounded-2xl bg-gradient-to-br from-blue-500/20 to-indigo-500/20 flex items-center justify-center border border-blue-500/30 shadow-[0_0_20px_rgba(59,130,246,0.2)] shrink-0">
           <MessageSquare className="w-6 h-6 sm:w-8 sm:h-8 text-blue-400" />
         </div>
         <h2 className="text-xl sm:text-3xl lg:text-4xl font-black text-white font-heading tracking-tight">
-          Ustoz AI Pro haqida
+          O'quvchilar natijalari
         </h2>
       </div>
 
-      <div className="relative w-full overflow-hidden pb-3 sm:pb-6">
-        {/* Left and Right Fade Gradients */}
-        <div className="absolute inset-y-0 left-0 w-16 sm:w-32 bg-gradient-to-r from-[#090e17] to-transparent z-10 pointer-events-none" />
-        <div className="absolute inset-y-0 right-0 w-16 sm:w-32 bg-gradient-to-l from-[#090e17] to-transparent z-10 pointer-events-none" />
-
-        {/* Scrolling Container */}
-        <div className="flex w-max animate-scroll hover:[animation-play-state:paused]">
-          {[...Array(2)].map((_, setIdx) => (
-            REVIEWS.map((review) => (
-              <div
-                key={`${setIdx}-${review.id}`}
-                className="mx-1.5 sm:mx-2 min-w-[220px] sm:min-w-[260px] max-w-[260px] bg-[#101724] border border-slate-800/80 rounded-xl p-4 shadow-lg flex flex-col gap-3 group transition-colors hover:border-slate-600 shrink-0"
-              >
-                <div className="flex items-center gap-1 text-yellow-500">
-                  {[...Array(review.rating)].map((_, i) => (
-                    <Star key={i} className="w-3.5 h-3.5 fill-current" />
-                  ))}
-                </div>
-                <p className="text-slate-300 text-[13px] leading-relaxed italic">"{review.content}"</p>
-                <div className="mt-auto flex items-center gap-2.5 pt-3 border-t border-slate-800/60 transition-colors group-hover:border-slate-700">
-                  {/* Initial Avatar */}
-                  <div className="w-8 h-8 rounded-full shrink-0 border border-blue-500/30 bg-gradient-to-br from-blue-600/20 to-sky-600/20 flex items-center justify-center shadow-[0_0_10px_rgba(59,130,246,0.1)] group-hover:border-blue-400/50 transition-colors">
-                    <span className="text-blue-400 font-black text-xs select-none">
-                      {getInitial(review.name)}
-                    </span>
-                  </div>
-                  <div className="flex flex-col">
-                    <span className="text-white font-bold text-[12px] tracking-wide leading-none">{review.name}</span>
-                    <span className="text-slate-500 text-[10px] mt-1 leading-none">{review.role}</span>
-                  </div>
-                </div>
+      <div className="relative w-full">
+        {/* Horizontal Scrolling Gallery - "snap-none" for free feel */}
+        <div
+          ref={scrollRef}
+          className="flex overflow-x-auto gap-4 sm:gap-6 px-4 pb-10 scrollbar-hide select-none active:cursor-grabbing cursor-grab overscroll-auto"
+          style={{
+            scrollbarWidth: 'none',
+            msOverflowStyle: 'none',
+            WebkitOverflowScrolling: 'touch'
+          }}
+        >
+          {INFINITE_IMAGES.map((src, index) => (
+            <div
+              key={index}
+              className="flex-none w-[280px] sm:w-[320px] lg:w-[380px]"
+            >
+              <div className="relative group overflow-hidden rounded-2xl border border-white/10 shadow-2xl transition-transform duration-500 hover:scale-[1.02] pointer-events-none">
+                <img
+                  src={src}
+                  alt={`Review ${index + 1}`}
+                  className="w-full h-auto object-cover block"
+                  loading="lazy"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
               </div>
-            ))
+            </div>
           ))}
+        </div>
+
+        {/* Visual cues for interaction */}
+        <div className="flex justify-center gap-1.5 mt-2 opacity-50">
+          <div className="h-0.5 w-24 bg-blue-500/20 rounded-full" />
         </div>
       </div>
     </div>
   );
 }
+
 
