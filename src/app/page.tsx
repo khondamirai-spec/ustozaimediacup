@@ -22,6 +22,7 @@ export default function Home() {
   const [subscription, setSubscription] = useState<"monthly" | "yearly">("yearly");
   const [isPaymentLoading, setIsPaymentLoading] = useState(false);
   const [mounted, setMounted] = useState(false);
+  const [isPlaying, setIsPlaying] = useState(false);
 
   // Timer state (Initial 35 days)
   const [timeLeft, setTimeLeft] = useState({
@@ -183,16 +184,44 @@ export default function Home() {
           </div>
 
           {/* Video Box */}
-          <div className="relative w-full aspect-video bg-[#0f1524]/80 backdrop-blur-md rounded-2xl border border-slate-700/60 flex flex-col items-center justify-center group overflow-hidden cursor-pointer shadow-xl transition-all duration-300 hover:border-slate-600 mt-2">
-            <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent z-10" />
+          <div
+            className="relative w-full aspect-[9/16] max-w-[400px] mx-auto bg-[#0f1524]/80 backdrop-blur-md rounded-2xl border border-slate-700/60 flex flex-col items-center justify-center group overflow-hidden cursor-pointer shadow-xl transition-all duration-300 hover:border-slate-600 mt-2"
+            onClick={() => {
+              const video = document.getElementById('hero-video') as HTMLVideoElement;
+              if (video) {
+                if (video.paused) {
+                  video.play();
+                  setIsPlaying(true);
+                } else {
+                  video.pause();
+                  setIsPlaying(false);
+                }
+              }
+            }}
+          >
+            <video
+              id="hero-video"
+              className="absolute inset-0 w-full h-full object-cover"
+              src="https://pub-53b0592c8c664875bac6456d9e6568fc.r2.dev/IMG_1243%20(1).mp4"
+              playsInline
+              onPlay={() => setIsPlaying(true)}
+              onPause={() => setIsPlaying(false)}
+              onEnded={() => setIsPlaying(false)}
+            />
 
-            <div className="z-20 w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-blue-600/30 flex items-center justify-center backdrop-blur-sm border border-blue-500/50 group-hover:bg-blue-600/50 group-hover:scale-110 transition-all shadow-[0_0_20px_rgba(59,130,246,0.3)]">
-              <div className="w-0 h-0 border-t-[7px] border-t-transparent border-l-[12px] border-l-white border-b-[7px] border-b-transparent ml-1"></div>
-            </div>
+            {!isPlaying && (
+              <>
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent z-10" />
 
-            <span className="z-20 mt-4 text-slate-300 text-xs sm:text-sm font-bold tracking-[0.2em] uppercase">
-              VIDEONI KO'RISH
-            </span>
+                <div className="z-20 w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-blue-600/30 flex items-center justify-center backdrop-blur-sm border border-blue-500/50 group-hover:bg-blue-600/50 group-hover:scale-110 transition-all shadow-[0_0_20px_rgba(59,130,246,0.3)]">
+                  <div className="w-0 h-0 border-t-[7px] border-t-transparent border-l-[12px] border-l-white border-b-[7px] border-b-transparent ml-1"></div>
+                </div>
+
+                <span className="z-20 mt-4 text-slate-300 text-xs sm:text-sm font-bold tracking-[0.2em] uppercase">
+                  VIDEONI KO'RISH
+                </span>
+              </>
+            )}
           </div>
 
 
