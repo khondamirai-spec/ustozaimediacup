@@ -3,7 +3,7 @@
 import { useRef, useEffect } from "react";
 import { MessageSquare } from "lucide-react";
 
-const REVIEW_IMAGES = Array.from({ length: 15 }, (_, i) => `/reviews/${i + 1}.jpg`);
+const REVIEW_IMAGES = [1, 2, 3, 4, 5, 6, 8, 9, 10, 11, 12, 13, 14, 15].map(i => `/reviews/${i}.jpg`);
 const INFINITE_IMAGES = [...REVIEW_IMAGES, ...REVIEW_IMAGES, ...REVIEW_IMAGES];
 
 export function Reviews() {
