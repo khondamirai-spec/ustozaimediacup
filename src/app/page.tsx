@@ -34,9 +34,9 @@ export default function Home() {
   useEffect(() => {
     setMounted(true);
 
-    // Set a fixed target date: April 9, 2026, at 15:00:00 (+35 days from March 5)
+    // Set a fixed target date: April 12, 2026, at 15:00:00
     // This ensures the timer "goes on even if you are not on site" by counting down to a specific moment.
-    const targetDate = new Date("2026-04-09T15:00:00");
+    const targetDate = new Date("2026-04-12T15:00:00");
 
     const calculateTime = () => {
       const now = new Date();
