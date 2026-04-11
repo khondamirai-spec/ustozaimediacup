@@ -24,9 +24,9 @@ export default function Home() {
   const [mounted, setMounted] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
 
-  // Timer state (Initial 35 days)
+  // Timer state (Initial 50 days)
   const [timeLeft, setTimeLeft] = useState({
-    days: 35,
+    days: 50,
     hours: 0,
     minutes: 0,
   });
@@ -34,9 +34,9 @@ export default function Home() {
   useEffect(() => {
     setMounted(true);
 
-    // Set a fixed target date: April 17, 2026, at 15:00:00
+    // Set a fixed target date: May 2, 2026, at 15:00:00
     // This ensures the timer "goes on even if you are not on site" by counting down to a specific moment.
-    const targetDate = new Date("2026-04-17T15:00:00");
+    const targetDate = new Date("2026-05-02T15:00:00");
 
     const calculateTime = () => {
       const now = new Date();
